@@ -1,0 +1,73 @@
+.page_designer {
+  background: #fff;
+  &_sider {
+    height: 100vh;
+    position: fixed;
+    overflow: auto;
+    background: #fff;
+    overflow-x: hidden;
+  }
+  &_props {
+    right: 0;
+    min-width: 300px;
+    width: 20%;
+  }
+  &_component {
+    left: 0;
+  }
+  &_panel {
+    margin: 0 270px 0 240px;
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+  }
+  &_title {
+    padding: 10px 0 10px 30px;
+    font-size: 16px;
+  }
+  &_tip {
+    color: #ccc;
+    font: 24px;
+    text-align: center;
+  }
+
+  .dropMove {
+    cursor: move;
+  }
+  .draggable {
+    border: 1px dashed #ffd1d1;
+    padding: 15px;
+    min-height: calc(100vh - 106px);
+  }
+  .isdroping {
+    border: 1px dashed #ff0000;
+  }
+  .ant-menu-inline {
+    border: none;
+  }
+  .ant-menu-sub.ant-menu-inline > .ant-menu-item,
+  .ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+  .ant-menu-vertical > .ant-menu-item,
+  .ant-menu-vertical-left > .ant-menu-item,
+  .ant-menu-vertical-right > .ant-menu-item,
+  .ant-menu-inline > .ant-menu-item,
+  .ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
+  .ant-menu-vertical-left > .ant-menu-submenu > .ant-menu-submenu-title,
+  .ant-menu-vertical-right > .ant-menu-submenu > .ant-menu-submenu-title,
+  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    height: 36px;
+    line-height: 36px;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .drag-container {
+    padding: 24px;
+  }
+}
