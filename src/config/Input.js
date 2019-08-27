@@ -13,20 +13,53 @@ export default {
     }
   },
   config: {
-    placeholder: {
-      text: '默认提醒'
-    },
-    type: {
-      text: '是否多行文本',
-      enum: [
-        'textarea',
-        'text'
-      ]
-    },
-    style: {
+    style: { // 样式
       width: {
-        text: '宽度'
+        label: '宽度',
+        value: ''
+      },
+      color: {
+        label: '文本颜色',
+        value: ''
       }
+    },
+    base: {
+      placeholder: {
+        label: '替换文本',
+        value: '请输入文本'
+      },
+      maxLength: {
+        label: '字符长度',
+        value: ''
+      },
+      value: {
+        label: '默认值',
+        value: ''
+      },
+      show: {
+        label: '是否显示',
+        value: true
+      },
+      readonly: {
+        label: '是否只读',
+        value: false
+      },
+      disabled: {
+        label: '是否禁用',
+        value: false
+      },
+      type: {
+        label: '是否多行文本',
+        value: 'text',
+        enum: [
+          'textarea',
+          'text'
+        ]
+      }
+    },
+    validate: { // 校验规则
+
     }
+
   }
 }

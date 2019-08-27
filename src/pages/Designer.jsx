@@ -15,11 +15,11 @@ export default class Designer extends Component {
   constructor() {
     super()
     this.state = {
-      menus,
+      menus, // 组件菜单
       componentIndex: 0, // 创建dom时给累加为id标识,不重复
       dynamicComp: [], // 当前动态组件
-      // allComponents: [], // 所有拖拽生成的组件
       isDesign: false, // 当前处理开始设计模式
+      editComponent: null , // 当前要编辑的对象，弹出配置窗的那个组件对象 ----------------------
       draggable: { // 拖拽
         move:null, // 移动的组件对象
         current: {}, // 当前拖拽的对象
@@ -115,11 +115,12 @@ export default class Designer extends Component {
     draggable.hover = null // 当前拖拽的对象
     this.setState({draggable, isDesign: true})
     const component = this.getComponent(this.state.draggable.current)  // 获取对应类型的组件
-    
+
     if (!component) return
     let dynamicComp = this.state.dynamicComp
     dynamicComp.push(component)
     this.setState({dynamicComp})
+    this.currentComponentEditHandle(component) // 
     console.log('拖拽释放,并获取组件:', component)
   }
 
@@ -134,14 +135,24 @@ export default class Designer extends Component {
       return  
     }
     const id = this.state.componentIndex +1
-
     this.setState({
       componentIndex: id
     })
-
     return { config, id, name, type:component }
   }
 
+ 
+ 
+  // 当前组件进入编辑模式
+  currentComponentEditHandle (component) {
+    const currentComponent = this.state.editComponent
+    if (currentComponent && component.id === currentComponent.id) return
+
+    this.setState({
+      editComponent: component
+    })
+    console.log('记录当前要编辑的组件对象')
+  }
   // 动态渲染组件
   renderComponent(component, index) {
     if (!component) return 
@@ -153,7 +164,9 @@ export default class Designer extends Component {
       
       }
       return (
-        <span className={col} key={index} id={'dom_' + id } style={style}>{React.createElement(type, config.props, config.slot)}</span>
+        <span className={col} key={index} id={'dom_' + id } style={style} onClick={ () => this.currentComponentEditHandle(component) }>
+          {React.createElement(type, config.props, config.slot)}
+        </span>
       )
     } else  {
       config.props.key = index
