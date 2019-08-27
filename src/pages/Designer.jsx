@@ -172,8 +172,12 @@ export default class Designer extends Component {
       config.props.key = index
       config.props.id = 'dom_' + id
       return React.createElement(type, config.props, config.slot)
-    }
-  
+    }  
+  }
+
+  // 渲染当前组件编辑面板
+  renderEditorPanel(name, index, obj) {
+    debugger
   }
 
   render() {
@@ -222,6 +226,13 @@ export default class Designer extends Component {
         <Sider className='page_designer_sider page_designer_props' width='260'>
           <h4 className='page_designer_title'>
             组件属性</h4>
+
+            <div data-desc='属性配置区'>
+                {
+                  // this.state.editComponent && Object.keys(this.state.editComponent).map((name, index, obj) => this.renderEditorPanel(name, index, obj))
+                  this.renderEditorPanel(this.state.editComponent)
+                }
+            </div>
         </Sider>
       </Layout>
     )
