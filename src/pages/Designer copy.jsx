@@ -2,7 +2,7 @@
  * @Author: houxingzhang 
  * @Date: 2019-08-28 20:00:24 
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-28 21:27:49
+ * @Last Modified time: 2019-08-28 20:54:30
  */
 import React, {Component} from 'react'
 import {
@@ -238,31 +238,12 @@ export default class Designer extends Component {
    * @param {*} obj 当前组件对象
    * @memberof Designer
    */
-  updateEditComponent =_.debounce((category, type, label, val, obj) => {
-      console.log(category, type, val)
+  updateEditComponent =_.debounce((category, type, val, obj) => {
+      console.log(category, type, val, obj)
       const { config } = obj
+
       debugger
 
-      if (val === 'true') {  // 对字符串的 'true' 'false'进行转换
-        val = true
-      } else if (val === 'false') {
-        val = false
-      }
-
-      if (category && type) {
-        config.config[category].props[type].value = val // 更新配置的值
-        config.props[type] = {
-          label: label,
-          value: val
-        }
-        
-      } else  {
-        console.error('参数配置错误')
-        return
-      }
-
-      //////////////////////////////////////////
-      console.log(obj)
     }, 500)
   
   /* updateEditComponent(e) {
@@ -273,11 +254,11 @@ export default class Designer extends Component {
   renderEditorPanel(obj) {
     if (!obj) return
     const config = obj.config.config //获取配置项
-    return (Object.keys(config).map(category => {
-      const item = config[category]      
+    return (config.map(item => {
+      
       const id = `panel_${item.type}_${item.id}` // 编辑页面的id
       return ( item.props &&
-        <section className='page_designer_prop_section' key={category}>
+        <section className='page_designer_prop_section' key={item.type}>
           <header>
             <a onClick={ () => this.showToggleHandel(id)} ><Icon type={ this.state.toggle.indexOf(id) > -1 ? 'caret-up': 'caret-down' } style={{
                 fontSize: '4px',
@@ -286,20 +267,19 @@ export default class Designer extends Component {
               </a>
           </header>
           <ul className={ this.state.toggle.indexOf(id) > -1 ? 'none': '' }>
-            {  Object.keys(item.props).map(type => {
-              const prop = item.props[type]
+            {  item.props.map(prop => {
                 return (
-                  <li key={type}>
+                  <li key={prop.type}>
                     <label>
                       <span className='label'>{prop.label}</span>
                       { 
                         prop.options || prop.enum || typeof prop.value === 'boolean' 
-                        ? <Select defaultValue={prop.value.toString()} className='input'  size='small' onChange={ val => this.updateEditComponent(category, type, prop.label, val, obj)} >
+                        ? <Select defaultValue={prop.value.toString()} className='input'  size='small' onChange={ val => this.updateEditComponent(item.type, prop.type, val, obj)} >
                             { this.createEditorPanelOption(prop) }
                           </Select>
                         : <Input size='small' className='input'   defaultValue={prop.value} id={prop.type} onChange={ e=>{
                           e.persist()
-                          this.updateEditComponent(category, type, prop.label, e.target.value, obj)
+                          this.updateEditComponent(item.type, prop.type, e.target.value, obj)
                         }} />
                       }
                       </label>

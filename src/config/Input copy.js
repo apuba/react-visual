@@ -1,8 +1,8 @@
 /* 文本框组件配置
- * @Author: houxingzhang
- * @Date: 2019-08-28 20:00:43
+ * @Author: houxingzhang 
+ * @Date: 2019-08-28 20:00:43 
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-28 20:53:46
+ * @Last Modified time: 2019-08-28 20:11:13
  */
 export default {
   type: 'Input', // 组件的类型
@@ -15,60 +15,74 @@ export default {
     placeholder: '请输入文本',
     type: 'text'
   },
-  config: { // 组件可配置选项, 出现在编辑属性页面上的参数
-    style: { // 固定值
+  config: [ // 组件可配置选项, 出现在编辑属性页面上的参数
+    {
+      type: 'style',
       label: '样式配置',
-      props: {
-        col: {
+      props: [
+        {
+          type: 'col',
           label: '栅格参数',
           value: 'ant-col-6'
         },
-        width: {
+        {
+          type: 'width',
           label: '宽度',
           value: ''
         },
-        color: {
+        {
+          type: 'color',
           label: '文本颜色',
           value: ''
         }
-      }
+      ]
     },
-    base: { // 固定值
+    {
+      type: 'base',
       label: '通用属性',
-      props: {
-        placeholder: {
+      props: [
+        {
+          type: 'placeholder',
           label: '替换文本',
           value: '请输入文本'
         },
-        maxLength: {
+        {
+          type: 'maxLength',
           label: '字符长度',
           value: ''
         },
-        defaultValue: {
+        {
+          type: 'defaultValue',
           label: '默认值',
           value: ''
         },
-        prefix: {
+        {
+          type: 'prefix',
           label: '前缀图标',
           value: ''
         },
-        value: {
+        {
+          type: 'value',
           label: '输入框内容',
           value: ''
         },
-        show: {
+        {
+          type: 'show',
           label: '是否显示',
           value: true // 当值为boolean 类型时,配置控件会转为select
         },
-        readonly: {
+        {
+          type: 'readonly',
           label: '是否只读',
           value: false
         },
-        disabled: {
+        {
+          type: 'disabled',
           label: '是否禁用',
           value: false
         },
-        type: {
+        {
+          type: 'type',
           label: '是否多行文本',
           value: 'text',
           options: [ // 当配置属性包括 options的参数时,配置控件会转为select,并且使用当前参数做为下拉列表的选项
@@ -82,22 +96,26 @@ export default {
             }
           ]
         }
-      }
+      ]
     },
-    validate: { // 固定值
+    {
+      type: 'validate',
       label: '校验规则'
     },
-    events: { // 固定值
+    {
+      type: 'events',
       label: '事件方法'
     },
-    dataBind: { // 固定值
+    {
+      type: 'dataBind',
       label: '数据绑定',
-      props: {
-        databind: {
+      props: [
+        {
+          type: 'databind',
           label: '数据双向绑定',
           value: ''
         }
-      }
+      ]
     }
-  }
+  ]
 }

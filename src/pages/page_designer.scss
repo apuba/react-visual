@@ -9,40 +9,94 @@
   }
   &_props {
     right: 0;
-    min-width: 300px;
-    width: 20%;
+    padding: 0 15px; 
+    &:hover {
+      box-shadow: #efefef 0 0 10px;
+      z-index: 2;
+    }
+    
   }
   &_component {
     left: 0;
   }
   &_panel {
-    margin: 0 270px 0 240px;
+    margin: 0 315px 0 240px;
     height: 100vh;
     background: #fff;
     border-left: 1px solid #eee;
     border-right: 1px solid #eee;
+    box-shadow: #efefef 0 0 5px;
+    z-index: 1;
   }
   &_title {
-    padding: 10px 0 10px 30px;
+    padding: 10px 0;
     font-size: 16px;
   }
   &_tip {
     color: #ccc;
-    font: 24px;
+    font-size: 16px;
     text-align: center;
-  }
+    line-height: 80vh;
+ 
 
-  .dropMove {
+  }
+  &_prop_section {
+    border: 1px solid #efefef;
+    margin: 15px 0;
+  
+    border-radius: 4px;
+    header {
+      padding: 10px;
+      border-bottom: 1px solid #efefef;    
+
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;      
+    }
+    li {
+      border-top: 1px solid #efefef;
+      height: 36px;
+      line-height: 36px;
+      padding: 0 10px;
+    }
+    .label {
+      display: inline-block;
+      text-align: right;
+      min-width: 90px;
+      padding-right: 10px;
+      font-size: 12px;
+    }
+    .input {
+      width: 166px;
+    }
+  }
+  .none {
+    display: none;
+  }
+  .fr {
+    float:right;
+  }
+  .drop-move {
     cursor: move;
   }
   .draggable {
     border: 1px dashed #ffd1d1;
     padding: 15px;
     min-height: calc(100vh - 106px);
-  }
+   
+  }  
   .isdroping {
     border: 1px dashed #ff0000;
   }
+  .isactive {
+   /*  margin: -1px;
+    border: 1px dashed #ff0000; */
+    background: #fff;
+    box-shadow:#c7c7c7 0 0 4px 1px
+  }
+
   .ant-menu-inline {
     border: none;
   }

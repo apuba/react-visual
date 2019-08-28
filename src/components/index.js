@@ -2,7 +2,7 @@
  * @Author: houxingzhang 
  * @Date: 2019-08-27 14:10:41 
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-27 15:00:11
+ * @Last Modified time: 2019-08-28 11:28:28
  */
 
 import HelloWorld from './HelloWorld'
@@ -13,4 +13,3 @@ Object.assign(allComponents, {
 })
 
 export default allComponents
-// module.exports = antd
