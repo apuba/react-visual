@@ -1,8 +1,9 @@
 import Button from './Button'
 import Input from './Input'
-var _ = require('lodash')
+import Select from './Select'
 
 export default {
   Button,
-  Input
+  Input,
+  Select
 }

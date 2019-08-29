@@ -18,6 +18,10 @@
   }
   &_component {
     left: 0;
+    &:hover {
+      box-shadow: #efefef 0 0 10px;
+      z-index: 2;
+    }
   }
   &_panel {
     margin: 0 315px 0 240px;
@@ -27,6 +31,23 @@
     border-right: 1px solid #eee;
     box-shadow: #efefef 0 0 5px;
     z-index: 1;
+  }
+  &_item {
+    position: relative;
+    .actionBtn {
+      position:absolute;
+      top: -12px;
+      right: -12px;
+      z-index: 4;
+      display: none;
+    }
+    &.isactive:hover .actionBtn {
+      display: inline-block;
+    }
+
+    .ant-select {
+      width: 100%;
+    }
   }
   &_title {
     padding: 10px 0;
@@ -47,8 +68,9 @@
     border-radius: 4px;
     header {
       padding: 10px;
-      border-bottom: 1px solid #efefef;    
-
+      border-bottom: 1px solid #efefef; 
+      color: #1890ff;
+      cursor: pointer;
     }
     ul {
       padding: 0;
@@ -69,7 +91,8 @@
       font-size: 12px;
     }
     .input {
-      width: 166px;
+      width: 150px;
+      margin-right: 5px;
     }
   }
   .none {
