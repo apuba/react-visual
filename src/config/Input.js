@@ -2,11 +2,11 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-29 20:42:40
+ * @Last Modified time: 2019-08-30 17:42:19
  */
 
 import { gridValue, grid } from './Base'
-import { DATABIND_MODEL_TIP } from './tips'
+import { DATABIND_MODEL_TIP } from './tipTypes'
 
 export default {
   grid: gridValue,

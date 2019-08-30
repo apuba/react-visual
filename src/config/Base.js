@@ -2,10 +2,10 @@
  * @Author: houxingzhang
  * @Date: 2019-08-29 17:14:31
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-29 19:22:18
+ * @Last Modified time: 2019-08-30 10:39:41
  */
 
- import * as tips from './tips'
+ import * as tips from './tipTypes'
 
 export const gridValue = { // 栅格系统 组件初始设置的值
   col: 'ant-col-xs-24 ant-col-sm-12 ant-col-md-6', // 24等分, 占6份,平均分成4份
@@ -24,6 +24,10 @@ export const grid = { // 栅格系统配置
       label: '栅格间隙',
       value: '10px',
       tip: tips.GRID_GUTTER_TIP
+    },
+    label: {
+      label: '显示标签',
+      value: ''
     }
   }
 }

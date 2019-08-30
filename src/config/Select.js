@@ -5,7 +5,7 @@
  * @Last Modified time: 2019-08-29 20:03:39
  */
 import { gridValue, grid } from './Base'
-import * as tips from './tips'
+import * as tips from './tipTypes'
 
 export default {
   grid: gridValue,

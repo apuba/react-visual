@@ -6,22 +6,26 @@
     overflow: auto;
     background: #fff;
     overflow-x: hidden;
+    &:hover {
+      box-shadow: #efefef 0 0 10px;
+      z-index: 2;
+    }
   }
   &_props {
     right: 0;
     padding: 0 15px; 
-    &:hover {
-      box-shadow: #efefef 0 0 10px;
-      z-index: 2;
+  }
+  &_toolbar {
+    position: absolute;
+    right: 24px;
+    top: 20px;
+    z-index: 1;
+    button {
+      margin-left: 10px;
     }
-    
   }
   &_component {
-    left: 0;
-    &:hover {
-      box-shadow: #efefef 0 0 10px;
-      z-index: 2;
-    }
+    left: 0;   
   }
   &_panel {
     margin: 0 315px 0 240px;
@@ -41,6 +45,9 @@
       z-index: 4;
       display: none;
     }
+    &:hover {
+      box-shadow: #c7c7c7 0 0 2px;
+    }
     &.isactive:hover .actionBtn {
       display: inline-block;
     }
@@ -57,8 +64,7 @@
     color: #ccc;
     font-size: 16px;
     text-align: center;
-    line-height: 80vh;
- 
+    line-height: 80vh; 
 
   }
   &_prop_section {
@@ -70,7 +76,7 @@
       padding: 10px;
       border-bottom: 1px solid #efefef; 
       color: #1890ff;
-      cursor: pointer;
+   
     }
     ul {
       padding: 0;
@@ -117,7 +123,7 @@
    /*  margin: -1px;
     border: 1px dashed #ff0000; */
     background: #fff;
-    box-shadow:#c7c7c7 0 0 4px 1px
+    box-shadow:#c7c7c7 0 0 6px 1px
   }
 
   .ant-menu-inline {
@@ -146,5 +152,6 @@
 
   .drag-container {
     padding: 24px;
+    position: relative;
   }
 }

@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:24
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-29 21:24:01
+ * @Last Modified time: 2019-08-30 17:36:17
  */
 import React, {Component} from 'react'
 import {
@@ -22,6 +22,8 @@ import menus from './compontMenu'
 import componentConfig from '../config/index'
 import _ from 'lodash';
 
+import PagePanel from './PagePanel'
+
 const allComponents = require('../components/index').default
 
 const {Content, Sider} = Layout
@@ -35,7 +37,30 @@ export default class Designer extends Component {
     super()
     this.state = {
       menus, // 组件菜单
-      staticDataSource: {}, // 当前设计器里的组件用到的静态数据源, 挂载在此对象上
+      dataSource: {
+        static: {
+          userType:[
+            {
+              key: '1',
+              value: '普通用户'
+            },
+            {
+              key: '2',
+              value: '青铜会员'
+            },
+            {
+              key: '3',
+              value: '白银会员'
+            },
+            {
+              key: '4',
+              value: '黄金会员'
+            }
+          ]
+        },
+        dynamic: {}
+      }, // 当前设计器里的组件用到的静态数据源, 挂载在此对象上
+
       dynamicComponentList: [], // 当前设计器里所有的动态组件集合
 
       componentIndex: 0, // 创建dom时给累加为id标识,不重复
@@ -151,7 +176,7 @@ export default class Designer extends Component {
     let {dynamicComponentList} = this.state
     dynamicComponentList.push(component)
     this.setState({dynamicComponentList})
-    this.currentComponentEditHandle(component)
+    this.currentComponentEditHandle(e, component)
     console.log('拖拽释放,并获取组件:', component)
   }
 
@@ -169,7 +194,7 @@ export default class Designer extends Component {
     const component = allComponents[name] // 组件类型
     const config = _.cloneDeep(componentConfig[name]) // 组件配置
     if (!component || !config) {
-      console.error(`缺少"${name}组件"的相关配置`)
+      console.error(`缺少'${name}组件'的相关配置`)
       return
     }
     const id = this.state.componentIndex + 1
@@ -178,12 +203,14 @@ export default class Designer extends Component {
   }
 
   // 当前组件进入编辑模式
-  currentComponentEditHandle(component) {
+  currentComponentEditHandle(e, component) {
+    e.stopPropagation() // 阻止事件冒泡
+    // e.nativeEvent.stopImmediatePropagation()
+    const domId = `dom_${component.name}_${component.id}`
+    this.activeHandle(domId)
     const currentComponentId = this.state.editComponentId
     if (currentComponentId && component.id === currentComponentId) return    
     this.setState({editComponentId: component.id}) //   _.cloneDeep(component) 深拷贝存储当前要编辑的组件
-    const domId = `dom_${component.name}_${component.id}`
-    this.activeHandle(domId)
     console.log('记录当前要编辑的组件对象:' + domId)
   }
 
@@ -191,16 +218,22 @@ export default class Designer extends Component {
   getEditComponentById(id) {
     return _.find(this.state.dynamicComponentList, {id})
   }
-
+  // 显示页面属性
+  showPageAttribute(e) {
+    this.setState({
+      editComponentId: null
+    })   
+    this.activeHandle('dom_0')     
+  }
   // 删除当前编辑的组件
   deleteCurrentComponent(e) {
-    e.preventDefault()
-    console.log('删除当前组件')
-    _.remove(this.state.dynamicComponentList, {id: this.state.editComponentId})
+    e && e.stopPropagation()
+    this.state.editComponentId && _.remove(this.state.dynamicComponentList, {id: this.state.editComponentId})
     this.setState({
       editComponentId:null,
-      activeId: null
+      activeId: 'dom_0'
     })
+    console.log('删除当前组件')
   }
   // 动态渲染拖拽生成的组件
   renderComponent(component, index) {
@@ -222,9 +255,12 @@ export default class Designer extends Component {
           key={index}
           id={domId}
           style={style}
-          onClick={() => this.currentComponentEditHandle(component)}>
-             <Button type="danger" size="small" icon="close" shape="circle" className='actionBtn' onClick={ this.deleteCurrentComponent.bind(this) } />
-          {React.createElement(type, props, config.slot)}
+          onClick={(e) => this.currentComponentEditHandle(e, component)}>
+             <Tooltip title='删除此组件'>
+             <Button type='danger' size='small' icon='close' shape='circle' className='actionBtn' onClick={ this.deleteCurrentComponent.bind(this) }  />
+             </Tooltip>
+          <label>{config.grid.label}</label>
+          <span>{React.createElement(type, props, config.slot)}</span>
         </span>
       )
     } else {
@@ -276,7 +312,6 @@ export default class Designer extends Component {
 
     //TODO: 还需要添加修改
     config.config[category].props[type].value = val // 更新配置的值 gutter
-   
     if (category === 'grid') {   // 栅格配置
       config.grid[type] = val
     } else if (type === 'slot') {
@@ -294,8 +329,9 @@ export default class Designer extends Component {
 
   // 渲染当前组件编辑面板
   renderEditorPanel(id = this.state.editComponentId) {
-    if (!id || this.data.draggable.hover) 
-      return //  this.data.draggable.hover 拖拽对象释放
+    if (!id || this.data.draggable.hover) {//  this.data.draggable.hover 拖拽对象释放
+      return 
+    }
     const obj = this.getEditComponentById(id)
     console.log(obj)
     if (!obj) 
@@ -304,8 +340,10 @@ export default class Designer extends Component {
     return (Object.keys(config).map(category => {
       const item = config[category]
       const id = `panel_${category}_${obj.id}` // 编辑页面的id
-      return (item.props && <section className='page_designer_prop_section' key={category}>
-        <header onClick={() => this.showToggleHandel(id)}>
+      return (item.props && 
+      <section className='page_designer_prop_section' key={category}>
+        <header>
+          <a onClick={() => this.showToggleHandel(id)}> 
           <Icon
             type={this
             .state
@@ -313,6 +351,7 @@ export default class Designer extends Component {
             .indexOf(id) > -1
             ? 'caret-up'
             : 'caret-down'}/> {item.label}
+          </a>
         </header>
         <ul
           className={this
@@ -357,7 +396,7 @@ export default class Designer extends Component {
                     }
                     {prop.tip && 
                       <Tooltip title={prop.tip} >
-                        <Icon type="question-circle"    theme="twoTone" twoToneColor="#1890ff"/>
+                        <Icon type='question-circle'  theme='twoTone' twoToneColor='#1890ff'/>
                       </Tooltip>
                     }                   
                   </label>
@@ -385,20 +424,21 @@ export default class Designer extends Component {
     } else if (prop.enum) {
       prop
         .enum
-        .map(item => {
+        .forEach(item => {
           options.push({key: item, value: item})
         })
     }
     return options.map(option => <Option key={option.key} value={option.key}>{option.value}</Option>)
   }
 
+
   render() {
     return (
       <Layout className='page_designer'>
-        <Sider className='page_designer_sider page_designer_compent' width='230'>
+        <Sider className='page_designer_sider page_designer_compent' width='240'>
           <h4 className='page_designer_title'>组件区</h4>
           <Menu
-            mode="inline"
+            mode='inline'
             openKeys={this.state.openKeys}
             onOpenChange={this.onOpenChange}
             className='page_designer_menu'>
@@ -408,18 +448,30 @@ export default class Designer extends Component {
         <Layout className='page_designer_panel'>
           <Content>
             <div className='drag-container'>
-              <Tabs onChange={this.tabCallback} type="card">
-                <TabPane tab="设计器" key="1">
+              <div className='page_designer_toolbar'>
+                <Tooltip title='数据源管理' >
+                  <Button type='primary' shape='circle' icon='codepen' />
+                </Tooltip>
+                <Tooltip title='弹窗管理' >
+                  <Button type='primary' shape='circle' icon='block' />
+                </Tooltip>
+                <Tooltip title='自定义CSS样式' >
+                  <Button type='primary' shape='circle' icon='container' />
+                </Tooltip>                 
+              </div>
+              <Tabs onChange={this.tabCallback} type='card'>
+                <TabPane tab='设计器' key='1'>
                   <div
                     id='dom_0'
                     className={'draggable ant-row ' + (this.state.activeId === 'dom_0'
                     ? 'isdroping'
                     : '')}
+                    onClick={ this.showPageAttribute.bind(this)}
                     onDragOver={e => this.dragOverHandle(e, 'dom_0')}
                     onDragLeave={e => this.dragLeaveHandle(e, 'dom_0')}
                     onDrop={e => this.dropHandle(e, 'dom_0')}>
                     {!this.state.isDesign && <div className='page_designer_tip'>
-                      请拖组件到这里进行设计
+                      <span>请拖组件到这里进行设计</span>
                     </div>}
                     {this
                       .state
@@ -427,7 +479,7 @@ export default class Designer extends Component {
                       .map((component, index) => this.renderComponent(component, index))}
                    </div>
                 </TabPane>
-                <TabPane tab="代码" key="2">
+                <TabPane tab='代码' key='2'>
                   源代码预览
                 </TabPane>
               </Tabs>
@@ -436,17 +488,23 @@ export default class Designer extends Component {
         </Layout>
         <Sider className='page_designer_sider page_designer_props' width='315'>
           {this.state.editComponentId
-            ? <h4
-                className='page_designer_title'
-                style={{ paddingRight: '15px'}}>
-                <Button type="primary" shape="circle" icon="close" className='fr' size='small'/> 
+            ? <section>
+              <h4
+                className='page_designer_title'> 
+                <Tooltip title='删除当前组件' placement='bottomRight'>
+                  <Button type='danger' size='small' icon='close' shape='circle' className='fr' onClick={ this.deleteCurrentComponent.bind(this) }  /> 
+                </Tooltip>                 
                 {this.state.editComponentId && this.getEditComponentById(this.state.editComponentId).config.title}组件属性
               </h4>
-            : <div className='page_designer_tip'>请选择组件</div>
+              <div data-desc='属性配置区'>
+               {this.renderEditorPanel()}
+              </div>
+              </section>
+            : <section>
+                <h4 className='page_designer_title'><span>页面属性</span></h4>  
+                <PagePanel  dataSource={ this.state.dataSource } />
+              </section>
           }
-          <div data-desc='属性配置区'>
-            {this.renderEditorPanel()}
-          </div>
         </Sider>
       </Layout>
     )
