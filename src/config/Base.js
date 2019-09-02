@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-29 17:14:31
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-30 10:39:41
+ * @Last Modified time: 2019-09-02 17:23:45
  */
 
  import * as tips from './tipTypes'
@@ -13,7 +13,7 @@ export const gridValue = { // 栅格系统 组件初始设置的值
 }
 
 export const grid = { // 栅格系统配置
-  label: '栅格配置',
+  label: '栅格设置',
   props: {
     col: {
       label: '栅格参数',

@@ -1,8 +1,15 @@
+/* 页面属性面板
+ * @Author: houxingzhang
+ * @Date: 2019-09-02 17:57:29
+ * @Last Modified by:   houxingzhang
+ * @Last Modified time: 2019-09-02 17:57:29
+ */
 import React, { Component } from 'react'
 import { Icon, Tooltip } from 'antd'
-import * as tips from '../config/tipTypes'
+import * as tips from '../../config/tipTypes'
+import { connect } from 'react-redux'
 
-export class PagePanel extends Component {
+class PagePanel extends Component {
   render () {
     const { showToggleHandel, dataSource } = this.props
     return (
@@ -29,4 +36,9 @@ export class PagePanel extends Component {
   }
 }
 
-export default PagePanel
+const mapStateToProps = store => {
+  const { designer } = store
+  return { dataSource: designer.dataSource }
+}
+
+export default connect(mapStateToProps)(PagePanel)

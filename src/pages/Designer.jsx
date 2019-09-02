@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:24
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-30 17:36:17
+ * @Last Modified time: 2019-09-02 21:30:21
  */
 import React, {Component} from 'react'
 import {
@@ -21,8 +21,12 @@ import './page_designer.scss'
 import menus from './compontMenu'
 import componentConfig from '../config/index'
 import _ from 'lodash';
+import PagePanel from './snippet/PagePanel'
+import EditorPanel from './snippet/EditorPanel'
 
-import PagePanel from './PagePanel'
+import { connect } from "react-redux";
+import { updateDynamicComponent, updateEditComponentId, updateDraggable, updateBaseState } from "../redux/reducers/designer/action"
+ 
 
 const allComponents = require('../components/index').default
 
@@ -31,7 +35,7 @@ const {SubMenu} = Menu
 const {TabPane} = Tabs
 const {Option} = Select
 
-export default class Designer extends Component {
+class Designer extends Component {
 
   constructor() {
     super()
@@ -74,14 +78,14 @@ export default class Designer extends Component {
     }
 
     this.rootSubmenuKeys = []
-    // 组件变量, 不影响UI
+    /* // 组件变量, 不影响UI
     this.data = {
       draggable: { // 拖拽
         move: null, // 移动的组件对象
         current: {}, // 当前拖拽的对象
         hover: false // 拖拽移动到上面的对象
       }
-    }
+    } */
   }
 
   // 组件菜单列表
@@ -144,38 +148,35 @@ export default class Designer extends Component {
 
   // 拖拽开始
   dragStartHandle(e, data) {
-    this.data.draggable.current = data // 当前拖拽的对象
-    /*   e.target.setAttribute('class', 'drop-move')  //FIXME:  拖动的样式, 当前无效 记得要修复
-    draggable.move = e.target */
-    // this.setState({draggable})
+    // this.props.draggable.current = data // 当前拖拽的对象
+    this.props.updateDraggable('current', data)  // 当前拖拽的对象
   }
   // 拖拽到上面
   dragOverHandle(e, dom) {
     e.preventDefault();
-    if (!this.data.draggable.hover) {
-      this.data.draggable.hover = true // 拖拽到上面标识
+    if (!this.props.draggable.hover) {
+      // this.props.draggable.hover = true // 拖拽到上面标识
+      this.props.updateDraggable('hover', true)  // 当前拖拽的对象
+
       this.setState({activeId: dom})
     }
-    console.log('拖拽到上面', dom)
+    console.log('拖拽到上面', this.props.draggable.hover)
   }
 
   // 拖拽移除目录对象
   dragLeaveHandle(e, dom) {
-    this.data.draggable.hover = false // 拖拽到上面标识
+    this.props.updateDraggable('hover', false)  // 当前拖拽的对象
     this.setState({activeId: null})
     console.log('移出去了')
   }
 
   // 拖拽释放结束
   dropHandle(e, dom) {
-    this.data.draggable.hover = false // 当前拖拽的对象
+    this.props.updateDraggable('hover', false)  // 当前拖拽的对象    
     this.setState({isDesign: true, activeId: null})
-    const component = this.getComponent(this.data.draggable.current) // 获取对应类型的组件
-    if (!component) 
-      return
-    let {dynamicComponentList} = this.state
-    dynamicComponentList.push(component)
-    this.setState({dynamicComponentList})
+    const component = this.getComponent(this.props.draggable.current) // 获取对应类型的组件
+    if (!component) return
+    this.props.updateDynamicComponent(component) // 添加动态组件
     this.currentComponentEditHandle(e, component)
     console.log('拖拽释放,并获取组件:', component)
   }
@@ -208,27 +209,30 @@ export default class Designer extends Component {
     // e.nativeEvent.stopImmediatePropagation()
     const domId = `dom_${component.name}_${component.id}`
     this.activeHandle(domId)
-    const currentComponentId = this.state.editComponentId
+    const currentComponentId = this.props.editComponentId
     if (currentComponentId && component.id === currentComponentId) return    
-    this.setState({editComponentId: component.id}) //   _.cloneDeep(component) 深拷贝存储当前要编辑的组件
+
+    // this.setState({editComponentId: component.id}) //   存储当前要编辑的组件
+    this.props.updateEditComponentId(component.id)
     console.log('记录当前要编辑的组件对象:' + domId)
   }
 
   // 获取当前要编辑的组件,显示到编辑面板上的那个组件
   getEditComponentById(id) {
-    return _.find(this.state.dynamicComponentList, {id})
+    return _.find(this.props.dynamicComponentList, {id})
   }
   // 显示页面属性
   showPageAttribute(e) {
+    debugger
     this.setState({
       editComponentId: null
     })   
-    this.activeHandle('dom_0')     
+    this.activeHandle('dom_0')
   }
   // 删除当前编辑的组件
   deleteCurrentComponent(e) {
     e && e.stopPropagation()
-    this.state.editComponentId && _.remove(this.state.dynamicComponentList, {id: this.state.editComponentId})
+    this.props.editComponentId && _.remove(this.props.dynamicComponentList, {id: this.props.editComponentId})
     this.setState({
       editComponentId:null,
       activeId: 'dom_0'
@@ -237,8 +241,9 @@ export default class Designer extends Component {
   }
   // 动态渲染拖拽生成的组件
   renderComponent(component, index) {
-    if (!component) 
-      return
+    if (!component) return false
+    // if (!component || this.props.draggable.hover) return false
+ 
     const {config, id, name, type} = component // 组件类型
     const domId = `dom_${name}_${id}`
     const props = config.props // 组件的属性
@@ -288,150 +293,6 @@ export default class Designer extends Component {
     console.log('当前激活的元素id：' + id)
   }
 
-  /**
-   *  更新当前编辑的组件属性，使用函数节流处理
-   *
-   * @param {*} category 属性大类
-   * @param {*} type 属性的类型
-   * @param {*} label 当前属性的标签名
-   * @param {*} val 属性值
-   * @param {*} obj 当前组件对象
-   * @memberof Designer
-   */
-  updateEditComponent = _.debounce((category, type, label, val, obj) => {
-    if (!category && !type) {
-      console.error('参数配置错误: 缺少category 或 type 参数')
-      return
-    }
-    const {config} = obj
-    if (val === 'true') { // 对字符串的 'true' 'false'进行转换
-      val = true
-    } else if (val === 'false') {
-      val = false
-    }
-
-    //TODO: 还需要添加修改
-    config.config[category].props[type].value = val // 更新配置的值 gutter
-    if (category === 'grid') {   // 栅格配置
-      config.grid[type] = val
-    } else if (type === 'slot') {
-      config.slot = val // 当前渲染的内容
-    } else if (val === '-' && config.props[type]) { // 如果值为 '-',则删除掉这属性
-      delete config.props[type]
-    } else {
-      config.props[type] = val // 当前渲染的属性
-    }
-    this.setState({
-      timespan: new Date().getTime() // 更新视图与状态
-    })
-    console.log(obj)
-  }, 500)
-
-  // 渲染当前组件编辑面板
-  renderEditorPanel(id = this.state.editComponentId) {
-    if (!id || this.data.draggable.hover) {//  this.data.draggable.hover 拖拽对象释放
-      return 
-    }
-    const obj = this.getEditComponentById(id)
-    console.log(obj)
-    if (!obj) 
-      return
-    const config = obj.config.config //获取配置项
-    return (Object.keys(config).map(category => {
-      const item = config[category]
-      const id = `panel_${category}_${obj.id}` // 编辑页面的id
-      return (item.props && 
-      <section className='page_designer_prop_section' key={category}>
-        <header>
-          <a onClick={() => this.showToggleHandel(id)}> 
-          <Icon
-            type={this
-            .state
-            .toggle
-            .indexOf(id) > -1
-            ? 'caret-up'
-            : 'caret-down'}/> {item.label}
-          </a>
-        </header>
-        <ul
-          className={this
-          .state
-          .toggle
-          .indexOf(id) > -1
-          ? 'none'
-          : ''}>
-          {Object
-            .keys(item.props)
-            .map(type => {
-              const prop = item.props[type]
-              const [inputId, selectId ] = [`input_${type}_${obj.id}` , `select_${type}_${obj.id}`]
-              return (
-                <li key={type}>                                  
-                  <label>                    
-                    <span className='label'>{prop.label}</span>
-                    {prop.options || prop.enum || typeof prop.value === 'boolean'
-                      ? <Select
-                          defaultValue={prop
-                          .value
-                          .toString()}
-                          className='input'
-                          size='small'
-                          key={selectId }
-                          id={selectId}
-                          ref={selectId}
-                          onChange={val => this.updateEditComponent(category, type, prop.label, val, obj)}>
-                          {this.createEditorPanelOption(prop)}
-                        </Select>
-                      : <Input
-                        size='small'
-                        className='input'
-                        defaultValue={prop.value}
-                        key={inputId }
-                        id={inputId }
-                        ref={inputId}
-                        onChange={e => {
-                        e.persist();
-                        this.updateEditComponent(category, type, prop.label, e.target.value, obj)
-                      }}/>
-                    }
-                    {prop.tip && 
-                      <Tooltip title={prop.tip} >
-                        <Icon type='question-circle'  theme='twoTone' twoToneColor='#1890ff'/>
-                      </Tooltip>
-                    }                   
-                  </label>
-                </li>
-              )
-            })}
-        </ul>
-      </section>)
-    }))
-  }
-
-  // 创建编辑页面的下拉选项
-  createEditorPanelOption(prop) {
-    let options = []
-    if (prop.options) {
-      options = prop.options
-    } else if (typeof prop.value === 'boolean') { // 布尔值
-      options.push({
-        key: 'true',
-        value: '是'
-      }, {
-        key: 'false',
-        value: '否'
-      })
-    } else if (prop.enum) {
-      prop
-        .enum
-        .forEach(item => {
-          options.push({key: item, value: item})
-        })
-    }
-    return options.map(option => <Option key={option.key} value={option.key}>{option.value}</Option>)
-  }
-
-
   render() {
     return (
       <Layout className='page_designer'>
@@ -474,7 +335,7 @@ export default class Designer extends Component {
                       <span>请拖组件到这里进行设计</span>
                     </div>}
                     {this
-                      .state
+                      .props
                       .dynamicComponentList
                       .map((component, index) => this.renderComponent(component, index))}
                    </div>
@@ -487,22 +348,22 @@ export default class Designer extends Component {
           </Content>
         </Layout>
         <Sider className='page_designer_sider page_designer_props' width='315'>
-          {this.state.editComponentId
+          {this.props.editComponentId
             ? <section>
               <h4
                 className='page_designer_title'> 
                 <Tooltip title='删除当前组件' placement='bottomRight'>
                   <Button type='danger' size='small' icon='close' shape='circle' className='fr' onClick={ this.deleteCurrentComponent.bind(this) }  /> 
                 </Tooltip>                 
-                {this.state.editComponentId && this.getEditComponentById(this.state.editComponentId).config.title}组件属性
+                {this.props.editComponentId && this.getEditComponentById(this.props.editComponentId).config.title}组件属性
               </h4>
-              <div data-desc='属性配置区'>
-               {this.renderEditorPanel()}
+              <div data-desc='属性配置区'>              
+                <EditorPanel showToggleHandel={ this.showToggleHandel} />
               </div>
               </section>
             : <section>
                 <h4 className='page_designer_title'><span>页面属性</span></h4>  
-                <PagePanel  dataSource={ this.state.dataSource } />
+                <PagePanel showToggleHandel={ this.showToggleHandel} />
               </section>
           }
         </Sider>
@@ -510,3 +371,15 @@ export default class Designer extends Component {
     )
   }
 }
+
+const mapStateToProps = store => {
+  const { designer } = store
+  const { editComponentId, dynamicComponentList, draggable } = designer
+  return { editComponentId, dynamicComponentList, draggable }
+}
+
+
+export default connect(
+  mapStateToProps,
+  { updateDynamicComponent, updateEditComponentId, updateDraggable, updateBaseState }
+)(Designer);
