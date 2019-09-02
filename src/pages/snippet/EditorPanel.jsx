@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:56:44
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-02 21:38:31
+ * @Last Modified time: 2019-09-02 21:43:36
  */
 import React, { Component } from 'react'
 import { Icon, Select, Input, Tooltip } from 'antd'
@@ -48,6 +48,7 @@ class EditorPanel extends Component {
       config.props[type] = val // 当前渲染的属性
     }
     this.props.updateBaseState('timespan', 'ver:' + new Date().getTime()) // 更新视图与状态
+    this.setState({})
     console.log('编辑属性完成',obj)
   }, 500)
 

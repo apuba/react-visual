@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:24
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-02 21:30:21
+ * @Last Modified time: 2019-09-02 21:51:39
  */
 import React, {Component} from 'react'
 import {
@@ -297,7 +297,7 @@ class Designer extends Component {
     return (
       <Layout className='page_designer'>
         <Sider className='page_designer_sider page_designer_compent' width='240'>
-          <h4 className='page_designer_title'>组件区</h4>
+          <h4 className='page_designer_title'>组件区 </h4>
           <Menu
             mode='inline'
             openKeys={this.state.openKeys}
@@ -357,7 +357,8 @@ class Designer extends Component {
                 </Tooltip>                 
                 {this.props.editComponentId && this.getEditComponentById(this.props.editComponentId).config.title}组件属性
               </h4>
-              <div data-desc='属性配置区'>              
+              <div data-desc='属性配置区'>      
+                  
                 <EditorPanel showToggleHandel={ this.showToggleHandel} />
               </div>
               </section>
@@ -374,8 +375,8 @@ class Designer extends Component {
 
 const mapStateToProps = store => {
   const { designer } = store
-  const { editComponentId, dynamicComponentList, draggable } = designer
-  return { editComponentId, dynamicComponentList, draggable }
+  const { editComponentId, dynamicComponentList, draggable, timespan} = designer
+  return { editComponentId, dynamicComponentList, draggable,timespan }
 }
 
 
