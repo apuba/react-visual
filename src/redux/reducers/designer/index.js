@@ -1,10 +1,11 @@
 import * as types from './actionType'
+import _ from 'lodash'
 
 const initialState = {
   menus: [], // 组件菜单
   dataSource: {
     static: {
-      userType: [
+      testList: [
         {
           key: '1',
           value: '普通用户'
@@ -64,9 +65,16 @@ export default (state = initialState, action) => {
       }
     case types.UPDATE_TOGGLE:
       const { domId } = action.payload
+      const toggle = _.clone(state.toggle)
+      const index = toggle.indexOf(domId)
+      if (index === -1) {
+        toggle.push(domId)
+      } else {
+        toggle.splice(index, 1)
+      }
       return {
         ...state,
-        toggle: [...state.toggle, domId]
+        toggle
       }
     case types.UPDATE_EDITCOMPONENTID:
       const { id } = action.payload

@@ -23,13 +23,13 @@ export default[
       {
         name: 'div通用块',
         key: 'div',
-        icon: 'setting',
-        subMenus: [
+        icon: 'setting'
+        /* subMenus: [
           {
             name: 'flex 布局',
             key: 'flex'
           }
-        ]
+        ] */
       }
     ]
   }

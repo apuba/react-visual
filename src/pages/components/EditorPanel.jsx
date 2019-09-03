@@ -2,12 +2,12 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:56:44
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-02 21:43:36
+ * @Last Modified time: 2019-09-03 15:35:45
  */
 import React, { Component } from 'react'
 import { Icon, Select, Input, Tooltip } from 'antd'
 import { connect } from 'react-redux'
-import { updateBaseState } from '../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle } from '../../redux/reducers/designer/action'
 import _ from 'lodash'
 
 const { Option } = Select
@@ -25,7 +25,7 @@ class EditorPanel extends Component {
    * @memberof Designer
    */
    updateEditComponent = _.debounce((category, type, label, val, obj) => {
-     // FIXME: 当前组件更新了,但父组件没更新UI
+
     if (!category && !type) {
       console.error('参数配置错误: 缺少category 或 type 参数')
       return
@@ -94,7 +94,7 @@ class EditorPanel extends Component {
       const id = `panel_${category}_${obj.id}` // 编辑页面的id
       return (item.props && <section className='page_designer_prop_section' key={category}>
         <header>
-          <a onClick={() => this.showToggleHandel(id)}>
+          <a onClick={() => this.props.updateToggle(id)}>
             <Icon type='caret-down' /> {item.label}
           </a>
         </header>
@@ -157,5 +157,5 @@ const mapStateToProps = store => {
 }
 
 export default connect(mapStateToProps,
-  { updateBaseState })
+  { updateBaseState, updateToggle })
   (EditorPanel)
