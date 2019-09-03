@@ -22,6 +22,12 @@ const initialState = {
           key: '4',
           value: '黄金会员'
         }
+      ],
+      test2: [
+        { 
+          key: '1',
+          value: '值'
+       }
       ]
     },
     dynamic: {}

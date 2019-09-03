@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-30 17:42:19
+ * @Last Modified time: 2019-09-03 17:12:39
  */
 
 import { gridValue, grid } from './Base'
@@ -50,15 +50,15 @@ export default {
           label: '输入框内容',
           value: ''
         },
-        readonly: {
+       /*  readonly: {
           label: '是否只读',
           value: false // 当值为boolean 类型时,配置控件会转为select
-        },
+        }, */
         disabled: {
           label: '是否禁用',
           value: false
-        },
-        type: {
+        }
+        /* type: {
           label: '是否多行文本',
           value: 'text',
           options: [ // 当配置属性包括 options的参数时,配置控件会转为select,并且使用当前参数做为下拉列表的选项
@@ -71,7 +71,7 @@ export default {
               value: '单行文本'
             }
           ]
-        }
+        } */
       }
     },
     validate: { // 固定值

@@ -1,3 +1,5 @@
+$primaryColor: #1890ff;
+
 .page_designer {
   background: #fff;
   &_sider {
@@ -67,6 +69,16 @@
     line-height: 80vh; 
 
   }
+  &_datasource_tool {
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 15px;
+    &:hover{
+      color: $primaryColor;
+    }
+  }
   &_prop_section {
     border: 1px solid #efefef;
     margin: 15px 0;
@@ -75,7 +87,7 @@
     header {
       padding: 10px;
       border-bottom: 1px solid #efefef; 
-      color: #1890ff;
+      color: $primaryColor;
    
     }
     ul {
@@ -100,6 +112,21 @@
       width: 150px;
       margin-right: 5px;
     }
+  }
+  &_datasource_item {
+    position: relative;
+    padding: 5px 0;
+  }
+  &_datasource_input {
+    width: 40%;
+    margin: 0 8px;
+  }
+  &_datasource_symbol {
+    line-height: 32px;
+    font-weight: bold;  
+  }
+  &_datasource_del {
+    margin-left: 15px;
   }
   .none {
     display: none;
