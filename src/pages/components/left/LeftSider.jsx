@@ -7,8 +7,8 @@
 import React, { Component } from 'react'
 import { Layout, Icon, Menu } from 'antd'
 import { connect } from 'react-redux'
-import menulist from '../../assets/data/compontMenu'
-import { updateDraggable } from '../../redux/reducers/designer/action'
+import menulist from '../../../assets/data/compontMenu'
+import { updateDraggable } from '../../../redux/reducers/designer/action'
 
 const { Sider } = Layout
 const { SubMenu } = Menu

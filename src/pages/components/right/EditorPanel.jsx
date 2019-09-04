@@ -2,12 +2,12 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:56:44
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 21:09:57
+ * @Last Modified time: 2019-09-05 00:54:18
  */
 import React, { Component } from 'react'
 import { Icon, Select, Input, Tooltip, Divider } from 'antd'
 import { connect } from 'react-redux'
-import { updateBaseState, updateToggle } from '../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle } from '../../../redux/reducers/designer/action'
 import _ from 'lodash'
 
 const { Option } = Select
@@ -99,9 +99,14 @@ class EditorPanel extends Component {
 
   // 下拉菜单添加数据源的事件
   selectAddDataSourceHandle (type, e) {
-    // TODO: 此处还可以根据 type 属性类型进行不同逻辑处理,目前默认为静态数据源
-    this.props.updateBaseState('editComponentId', null)
-    this.props.updateBaseState('activeId', 'dom_0')
+    if (type === 'staticDataSource') {
+      this.props.updateBaseState('editComponentId', null)
+      this.props.updateBaseState('activeId', 'dom_0')
+    }else {
+      alert('动态数据源添加')
+      // TODO: 开发到这里。添加动态数据源，新建一个组件，通过组件选择数据表，筛选的字段名，查询条件得到一个数据源请求配置
+      // 通过这个配置获取对应数据源，绑定到对应当前组件
+    }
   }
   // 创建组件的属性
   renderProps (config, type) {
@@ -141,8 +146,7 @@ class EditorPanel extends Component {
             <Icon type='caret-down' /> {item.label}
           </a>
         </header>
-        <ul
-          className={toggle.indexOf(id) > -1 ? 'none' : ''}>
+        <ul  className={toggle.indexOf(id) > -1 ? 'none' : ''}>
           {Object
             .keys(item.props)
             .map(type => {
@@ -151,12 +155,13 @@ class EditorPanel extends Component {
               // 定义组件的属性
               const attrs =  this.renderProps(config, type)
               return (
-                <li key={type}>
-                  {/* TODO: 这里添加 onMouseDown 是为了阻止Select默认行为导致 dropdownRender 无法生效  */}
-                  <label  onMouseDown={(e) => { e.preventDefault(); return false; }} > 
+                <li key={type}>                  
+                  <label  > 
                     <span className='label'>{prop.label}</span>
                     {prop.options || prop.enum || typeof prop.value === 'boolean' ? 
-                      <Select { ...attrs }
+                      <span onMouseDown={(e) => { e.preventDefault(); return false; }}>
+                        {/* TODO: 这里添加 onMouseDown 是为了阻止Select默认行为导致 dropdownRender 无法生效  */}
+                        <Select { ...attrs }
                         defaultValue={prop
                           .value
                           .toString()}
@@ -167,7 +172,9 @@ class EditorPanel extends Component {
                         ref={selectId}
                         onChange={val => this.updateEditComponent(category, type, prop.label, val, obj)}>
                         {this.createEditorPanelOption(prop, type)}
-                      </Select>: 
+                      </Select>
+                      </span>
+                      : 
                       <Input { ...attrs }
                         size='small'
                         className='input'

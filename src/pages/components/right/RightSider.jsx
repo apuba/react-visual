@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { Layout, Tooltip, Button } from 'antd'
 import PagePanel from './PagePanel'
 import EditorPanel from './EditorPanel'
-import { updateBaseState, updateToggle } from '../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle } from '../../../redux/reducers/designer/action'
 import _ from 'lodash'
 
 const { Sider } = Layout

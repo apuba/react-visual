@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 18:39:04
+ * @Last Modified time: 2019-09-05 00:38:15
  */
 import { gridValue, grid } from './Base'
 import * as tips from './tipTypes'
@@ -36,10 +36,10 @@ export default {
       label: '事件方法'
     },
     dataBind: { // 固定属性
-      label: '数据绑定',
+      label: '数据绑定配置',
       props: {
         model: {
-          label: '数据双向绑定',
+          label: '数据绑定',
           value: '',
           tip: tips.DATABIND_MODEL_TIP
         },

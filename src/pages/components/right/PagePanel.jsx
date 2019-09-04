@@ -6,12 +6,13 @@
  */
 import React, { Component } from 'react'
 import { Icon, Tooltip, Button, Modal, Input, message } from 'antd'
-import * as tips from '../../config/tipTypes'
+import * as tips from '../../../config/tipTypes'
 import { connect } from 'react-redux'
-import { updateBaseState, updateToggle, updateDataSourceStatic } from '../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle, updateDataSourceStatic } from '../../../redux/reducers/designer/action'
 import useForm from 'react-hook-form' // 引入hookForm 表单校验
-import * as validate from '../../commons/validate'
+import * as validate from '../../../commons/validate'
 import _ from 'lodash'
+
 const { confirm } = Modal
 
 // 创建表单
@@ -110,7 +111,8 @@ class PagePanel extends Component {
   modalAddHandle () {
     const { dataSourceList } = this.state
     const lastItem = dataSourceList[dataSourceList.length - 1]
-    const key = !lastItem ? '0' : (/^\d+$/.test(lastItem.key) ? lastItem.key * 1 + 1 : '') // 如果是数字则给key递增
+    const isNumber = /^\d+$/.test(lastItem.key)
+    const key = !lastItem ? '0' : (isNumber ? lastItem.key * 1 + 1 : '') // 如果是数字则给key递增
     dataSourceList.push({
       key,
       value: ''
@@ -118,6 +120,12 @@ class PagePanel extends Component {
     this.setState({
       dataSourceList
     })
+
+    const target = isNumber ? 'value' : 'key'
+    setTimeout(() => {
+      const input = this.refs[target +(dataSourceList.length-1)].input
+      input.focus()
+    },200)
   }
   // 删除一条数据源条目
   btnRemoveDataSourceItem (item, index) {
@@ -154,6 +162,20 @@ class PagePanel extends Component {
     console.log(_this.state.dataSourceList, _this.state.dataSourceType)
   }
 
+  // 焦点事件
+  focusHandle (target, index, e) {
+    const len = this.state.dataSourceList.length    
+    if (index < len) {
+      const input = this.refs[target + index].input
+      input.focus()
+    }else {
+      // alert('新增')
+      this.modalAddHandle()
+    }
+    // input.setSelectionRange(0, input.value.length) //是否全选当前文本
+
+  }
+
   render () {
     const { dataSource, toggle } = this.props
     return (
@@ -188,7 +210,7 @@ class PagePanel extends Component {
           </ul>
         </section>
 
-        <Modal
+        {<Modal
           title={this.state.modalTitle}
           visible={this.state.modalShow}
           onOk={this.btnSaveDataSource.bind(this)}
@@ -212,9 +234,11 @@ class PagePanel extends Component {
               this.state.modalAction === 'edit' && this.state.dataSourceList.map((item, index) => {
                 return (
                   <div className='page_designer_datasource_item' key={index}>
-                    <Input addonBefore='值' name='key' className='page_designer_datasource_input' onChange={this.changeInputHandle.bind(this, item)} value={item.key} key={this.state.dataSourceType + 'key' + index} />
+                    <Input addonBefore='值' name='key' className='page_designer_datasource_input' ref={'key'+ index}
+                     onPressEnter={this.focusHandle.bind(this, 'value', index)} onChange={this.changeInputHandle.bind(this, item)} value={item.key} key={this.state.dataSourceType + 'key' + index} />
                     <span className='page_designer_datasource_symbol'> = </span>
-                    <Input addonBefore='名称' name='value' className='page_designer_datasource_input' onChange={this.changeInputHandle.bind(this, item)} value={item.value} key={this.state.dataSourceType + 'value' + index} />
+                    <Input addonBefore='名称' name='value' ref={'value'+ index} className='page_designer_datasource_input' 
+                    onPressEnter={this.focusHandle.bind(this, 'key', index +1)} onChange={this.changeInputHandle.bind(this, item)} value={item.value} key={this.state.dataSourceType + 'value' + index} />
                     {index > 0 &&
                       <Tooltip title='删除当前条目'>
                         <Button type='primary' shape='circle' size='small' icon='minus' className='page_designer_datasource_del' onClick={(e) => this.btnRemoveDataSourceItem(item, index)} />
@@ -225,7 +249,7 @@ class PagePanel extends Component {
               })
             }
           </div>
-        </Modal>
+        </Modal>}
       </div>
     )
   }

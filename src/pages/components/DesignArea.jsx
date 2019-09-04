@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:28
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 21:07:56
+ * @Last Modified time: 2019-09-05 00:48:24
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -119,6 +119,8 @@ class DesignArea extends Component {
       case 'button':
       case 'Button':
         return config.slot
+      default:
+        break
     }
   }
 
@@ -127,17 +129,9 @@ class DesignArea extends Component {
     let props = config.props
     switch (config.type) {
       case 'select':
-      case 'Select':
+      case 'Select':        
         if (config.props.staticDataSource) { // 有静态数据
-          /*  props.dropdownRender = menu => (
-            <div>
-              {menu}
-              <Divider style={{ margin: '4px 0' }} />
-              <div style={{ padding: '8px', cursor: 'pointer' }}>
-                <Icon type='plus' /> 添加数据源
-              </div>
-            </div>
-          ) */
+          props.key = config.type + new Date().getTime() // 添加标识，更新时，去掉当前选中的值
         }
         break
       default:

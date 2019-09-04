@@ -13,8 +13,8 @@ import {
 } from 'antd'
 import '../assets/scss/page_designer.scss'
 
-import RightSider from './components/RightSider'
-import LeftSider from './components/LeftSider'
+import RightSider from './components/right/RightSider'
+import LeftSider from './components/left/LeftSider'
 import DesignArea from './components/DesignArea'
 import Code from './components/Code'
 import { connect } from 'react-redux'
