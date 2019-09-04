@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:56:44
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 21:02:48
+ * @Last Modified time: 2019-09-04 21:09:57
  */
 import React, { Component } from 'react'
 import { Icon, Select, Input, Tooltip, Divider } from 'antd'
@@ -113,7 +113,7 @@ class EditorPanel extends Component {
               <div>
                 {menu}
                 <Divider style={{ margin: '4px 0' }} />
-                <div data-desc='自定义条目' style={{ padding: '8px', cursor: 'pointer' }} onClick={ this.selectAddDataSourceHandle.bind(this, type)}>
+                <div data-desc='自定义条目' style={{ padding: '0 0 10px 10px', cursor: 'pointer' }} onClick={ this.selectAddDataSourceHandle.bind(this, type)}>
                   <Icon type='plus' /> 添加数据源
                 </div>
               </div>

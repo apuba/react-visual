@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:28
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 20:11:19
+ * @Last Modified time: 2019-09-04 21:07:56
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -115,7 +115,7 @@ class DesignArea extends Component {
         }
       case 'input':
       case 'Input':
-        return '1'
+        return config.slot
       case 'button':
       case 'Button':
         return config.slot
