@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-29 20:03:39
+ * @Last Modified time: 2019-09-04 18:39:04
  */
 import { gridValue, grid } from './Base'
 import * as tips from './tipTypes'
@@ -43,9 +43,9 @@ export default {
           value: '',
           tip: tips.DATABIND_MODEL_TIP
         },
-        staticDataSource: { // 固定属性
+        staticDataSource: { // 固定属性 会读取当前设计器的state的DataSource.static数据
           label: '静态数据源',
-          value: '',
+          value: '-',
           options: [],
           tip: tips.STATIC_DATABIND_SOURCE_TIP
         },

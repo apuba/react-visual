@@ -6,13 +6,13 @@ export default[
     subMenus: [
       {
         name: '输入框',
-        key: 'input'
+        key: 'Input'
       }, {
         name: '按钮',
-        key: 'button'
+        key: 'Button'
       }, {
         name: '下拉列表',
-        key: 'select'
+        key: 'Select'
       }
     ]
   }, {

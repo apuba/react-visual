@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-03 17:12:39
+ * @Last Modified time: 2019-09-04 17:49:13
  */
 
 import { gridValue, grid } from './Base'
@@ -50,7 +50,7 @@ export default {
           label: '输入框内容',
           value: ''
         },
-       /*  readonly: {
+        /*  readonly: {
           label: '是否只读',
           value: false // 当值为boolean 类型时,配置控件会转为select
         }, */
@@ -81,10 +81,10 @@ export default {
       label: '事件方法'
     },
     dataBind: { // 固定值
-      label: '数据绑定',
+      label: '数据绑定配置',
       props: {
         model: {
-          label: '数据双向绑定',
+          label: '数据绑定',
           value: '',
           tip: DATABIND_MODEL_TIP
         }

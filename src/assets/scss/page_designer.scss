@@ -39,6 +39,7 @@ $primaryColor: #1890ff;
     z-index: 1;
   }
   &_item {
+   
     position: relative;
     .actionBtn {
       position:absolute;
@@ -113,7 +114,14 @@ $primaryColor: #1890ff;
       margin-right: 5px;
     }
   }
+  &_datasource_list {
+    position: relative;
+    max-height: 50vh;
+    overflow-y: auto;
+    text-align: center;
+  }
   &_datasource_item {
+     text-align: left;
     position: relative;
     padding: 5px 0;
   }
@@ -126,7 +134,11 @@ $primaryColor: #1890ff;
     font-weight: bold;  
   }
   &_datasource_del {
-    margin-left: 15px;
+    margin-left: 10px;
+  }
+  &_datasource_type {
+    margin: 0px auto;
+    width: 400px;
   }
   .none {
     display: none;
@@ -182,3 +194,9 @@ $primaryColor: #1890ff;
     position: relative;
   }
 }
+
+.formvalidate {
+    .error {
+      border: 1px solid #ff0000;
+    }
+  }

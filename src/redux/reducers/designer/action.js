@@ -42,3 +42,13 @@ export const updateDraggable = (key, value) => ({
     value
   }
 })
+
+// 更新静态数据源
+export const updateDataSourceStatic = (action, key, value) => ({
+  type: types.UPDATE_DATASOURCE_STATIC,
+  payload: {
+    key,
+    value,
+    action
+  }
+})

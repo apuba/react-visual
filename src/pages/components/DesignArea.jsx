@@ -2,18 +2,18 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:28
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-03 16:55:17
+ * @Last Modified time: 2019-09-04 20:11:19
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tooltip, Button } from 'antd'
+import { Select, Tooltip, Button, Icon, Divider } from 'antd'
 import componentConfig from '../../config/index'
 
 import _ from 'lodash'
 import { updateDynamicComponent, updateEditComponentId, updateDraggable, updateBaseState } from '../../redux/reducers/designer/action'
 
 const allComponents = require('../../components/index').default
-
+const { Option } = Select
 class DesignArea extends Component {
   constructor () {
     super()
@@ -54,13 +54,13 @@ class DesignArea extends Component {
   // 获取对应组件类型及相关配置
   getComponent (type) {
     if (!type || !type.key) return
-    const name = type
+    /*   const name = type
       .key
       .substring(0, 1)
       .toUpperCase() + type
       .key
-      .substring(1) // 保障首字大写
-
+      .substring(1) // 保障首字大写 */
+    const name = type.key
     const component = allComponents[name] // 组件类型
     const config = _.cloneDeep(componentConfig[name]) // 组件配置
     if (!component || !config) {
@@ -97,12 +97,61 @@ class DesignArea extends Component {
     this.props.updateBaseState('activeId', 'dom_0') // 更新视图与状态
     console.log('删除当前组件')
   }
-  // 动态渲染拖拽生成的组件
+
+  // 渲染组件的子级内容 ------------------------------------------
+  renderChilden (config) {
+    switch (config.type) {
+      case 'select':
+      case 'Select':
+        if (config.props.staticDataSource) { // 有静态数据
+          const list = this.props.dataSource.static[config.props.staticDataSource] // 筛选出当前所属的静态数据源
+          return (
+            list.map(item => {
+              return (<Option key={item.key} value={item.key}>{item.value}</Option>)
+            })
+          )
+        } else {
+          return ''
+        }
+      case 'input':
+      case 'Input':
+        return '1'
+      case 'button':
+      case 'Button':
+        return config.slot
+    }
+  }
+
+  // 创建组件的属性
+  renderProps (config) {
+    let props = config.props
+    switch (config.type) {
+      case 'select':
+      case 'Select':
+        if (config.props.staticDataSource) { // 有静态数据
+          /*  props.dropdownRender = menu => (
+            <div>
+              {menu}
+              <Divider style={{ margin: '4px 0' }} />
+              <div style={{ padding: '8px', cursor: 'pointer' }}>
+                <Icon type='plus' /> 添加数据源
+              </div>
+            </div>
+          ) */
+        }
+        break
+      default:
+        break
+    }
+    return props
+  }
+  // 动态渲染拖拽生成的组件 ------------------------------------------------------------------------------------
   renderComponent (component, index) {
     if (!component) return false
     const { config, id, name, type } = component // 组件类型
     const domId = `dom_${name}_${id}`
-    const props = config.props // 组件的属性
+    const props = this.renderProps(config) // 组件的属性
+    const children = this.renderChilden(config) // 子级内容
     if (config.grid) { // 带有栅格属性
       const { col, gutter } = config.grid
       const style = {
@@ -118,16 +167,16 @@ class DesignArea extends Component {
           style={style}
           onClick={(e) => this.currentComponentEditHandle(e, component)}>
           <Tooltip title='删除此组件'>
-            <Button type='danger' size='small' icon='close' shape='circle' className='actionBtn' onClick={this.deleteCurrentComponent.bind(this)}  />
+            <Button type='danger' size='small' icon='close' shape='circle' className='actionBtn' onClick={this.deleteCurrentComponent.bind(this)} />
           </Tooltip>
           <label>{config.grid.label}</label>
-          <span>{React.createElement(type, props, config.slot)}</span>
+          <span className='isComponent'>{React.createElement(type, props, children)}</span>
         </span>
       )
     } else {
       props.key = index
       props.id = domId
-      return React.createElement(type, props, config.slot)
+      return React.createElement(type, props, children)
     }
   }
   render () {
@@ -155,8 +204,8 @@ class DesignArea extends Component {
 
 const mapStateToProps = store => {
   const { designer } = store
-  const { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId } = designer
-  return { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId }
+  const { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource } = designer
+  return { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource }
 }
 
 export default connect(mapStateToProps, {

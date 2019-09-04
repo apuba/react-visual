@@ -25,9 +25,13 @@ const initialState = {
       ],
       test2: [
         { 
-          key: '1',
-          value: '值'
-       }
+          key: 'a',
+          value: '写入'
+        },
+        { 
+          key: 'b',
+          value: '读出'
+        }
       ]
     },
     dynamic: {}
@@ -61,7 +65,30 @@ const updateBaseStore = (state, key, value) => {
   }
 }
 
+/* const setStore = (state, obj) => {
+  obj = obj || {
+    dataSource: {
+      static: [],
+      dyniamic:[]
+    }
+  }
+}
+
+const attrArray = [] // 属性名
+const TraversalObject = (obj) => {
+  obj.forEach(name => {
+    const item = obj[name]
+    if (typeof (item) === 'object') {
+      TraversalObject(item)// 递归遍历
+    } else {
+      // 值
+    }
+  })
+} */
+
 export default (state = initialState, action) => {
+  const { dataSource } = state
+
   switch (action.type) {
     case types.UPDATE_DYNAMICCOMPONENT_LIST:
       const { component } = action.payload
@@ -99,6 +126,17 @@ export default (state = initialState, action) => {
     case types.UPDATE_BASE_STATE:
       const newState = updateBaseStore(state, action.payload.key, action.payload.value)
       return newState
+    case types.UPDATE_DATASOURCE_STATIC:
+      debugger
+      if (action.payload.action === 'remove') {
+        delete dataSource.static[action.payload.key]
+      } else {
+        dataSource.static[action.payload.key] = action.payload.value
+      }
+      return {
+        ...state,
+        dataSource: _.cloneDeep(dataSource)
+      }
     default:
       return state
   }
