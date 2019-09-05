@@ -2,14 +2,12 @@
  * @Author: houxingzhang
  * @Date: 2019-08-27 14:10:41
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-03 19:29:27
+ * @Last Modified time: 2019-09-05 16:57:34
  */
 
-import HelloWorld from './HelloWorld'
+import RJSelect from './RJSelect'
 var allComponents = require('antd')
-
 Object.assign(allComponents, {
-  HelloWorld
+  RJSelect
 })
-
 export default allComponents

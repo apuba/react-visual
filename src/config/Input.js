@@ -2,11 +2,11 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:43
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 17:49:13
+ * @Last Modified time: 2019-09-05 16:07:08
  */
 
 import { gridValue, grid } from './Base'
-import { DATABIND_MODEL_TIP } from './tipTypes'
+import { DATABIND_MODEL_TIP, CSS_CLASS_TIP } from './tipTypes'
 
 export default {
   grid: gridValue,
@@ -28,6 +28,11 @@ export default {
         color: {
           label: '文本颜色',
           value: ''
+        },
+        className: {
+          label: 'CSS样式名',
+          value: '',
+          tip: CSS_CLASS_TIP
         }
       }
     },
@@ -50,10 +55,10 @@ export default {
           label: '输入框内容',
           value: ''
         },
-        /*  readonly: {
+        readOnly: {
           label: '是否只读',
           value: false // 当值为boolean 类型时,配置控件会转为select
-        }, */
+        },
         disabled: {
           label: '是否禁用',
           value: false

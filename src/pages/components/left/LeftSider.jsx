@@ -2,13 +2,13 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:46
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-03 16:55:44
+ * @Last Modified time: 2019-09-05 20:37:16
  */
 import React, { Component } from 'react'
 import { Layout, Icon, Menu } from 'antd'
 import { connect } from 'react-redux'
 import menulist from '../../../assets/data/compontMenu'
-import { updateDraggable } from '../../../redux/reducers/designer/action'
+import { updateDraggable, updateBaseState } from '../../../redux/reducers/designer/action'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -25,6 +25,7 @@ class LeftSider extends Component {
   // 拖拽开始
   dragStartHandle (e, data) {
     this.props.updateDraggable('current', data) // 当前拖拽的对象
+    this.props.updateBaseState('tabActiveKey', 'designer')
   }
   // 组件菜单列表
   menuList (list = menulist) {
@@ -92,4 +93,4 @@ const mapStateToProps = store => {
   return { menus }
 }
 export default connect(mapStateToProps,
-  { updateDraggable })(LeftSider)
+  { updateDraggable, updateBaseState })(LeftSider)

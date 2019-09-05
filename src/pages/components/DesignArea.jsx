@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:28
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 00:48:24
+ * @Last Modified time: 2019-09-05 14:48:28
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -12,7 +12,7 @@ import componentConfig from '../../config/index'
 import _ from 'lodash'
 import { updateDynamicComponent, updateEditComponentId, updateDraggable, updateBaseState } from '../../redux/reducers/designer/action'
 
-const allComponents = require('../../components/index').default
+const allComponents = require('../../components').default
 const { Option } = Select
 class DesignArea extends Component {
   constructor () {
@@ -129,7 +129,7 @@ class DesignArea extends Component {
     let props = config.props
     switch (config.type) {
       case 'select':
-      case 'Select':        
+      case 'Select':
         if (config.props.staticDataSource) { // 有静态数据
           props.key = config.type + new Date().getTime() // 添加标识，更新时，去掉当前选中的值
         }
@@ -137,6 +137,15 @@ class DesignArea extends Component {
       default:
         break
     }
+    // 处理样式部分
+    props.style = { ...props.style }
+    const baseStyle = _.cloneDeep(config.config.style.props)
+    baseStyle && Object.keys(baseStyle).forEach(name => {
+      if (name !== 'className') {
+        props.style[name] = baseStyle[name].value
+        delete props[name] // 移除不必要的props
+      }
+    })
     return props
   }
   // 动态渲染拖拽生成的组件 ------------------------------------------------------------------------------------
@@ -173,6 +182,16 @@ class DesignArea extends Component {
       return React.createElement(type, props, children)
     }
   }
+
+  // 在渲染前调用,在客户端也在服务端。
+  componentWillMount () {
+
+  }
+  // 在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构
+  componentDidMount () {
+
+  }
+
   render () {
     return (
       <div
@@ -180,10 +199,15 @@ class DesignArea extends Component {
         className={'draggable ant-row ' + (this.props.activeId === 'dom_0'
           ? 'isdroping'
           : '')}
-        onClick={ this.showPageAttribute.bind(this)}
+        onClick={this.showPageAttribute.bind(this)}
         onDragOver={e => this.dragOverHandle(e, 'dom_0')}
         onDragLeave={e => this.dragLeaveHandle(e, 'dom_0')}
         onDrop={e => this.dropHandle(e, 'dom_0')}>
+        <style>
+          {
+            this.props.css // 样式部分
+          }
+        </style>
         {!this.props.isDesign && <div className='page_designer_tip'>
           <span>请拖组件到这里进行设计</span>
         </div>}
@@ -198,8 +222,8 @@ class DesignArea extends Component {
 
 const mapStateToProps = store => {
   const { designer } = store
-  const { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource } = designer
-  return { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource }
+  const { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource, css } = designer
+  return { editComponentId, dynamicComponentList, draggable, timespan, isDesign, activeId, dataSource, css }
 }
 
 export default connect(mapStateToProps, {

@@ -140,6 +140,15 @@ $primaryColor: #1890ff;
     margin: 0px auto;
     width: 400px;
   }
+  &_code {
+    border: 1px solid #000000;
+    padding: 15px;
+    min-height: calc(100vh - 106px);
+    display: block;
+    width: 100%;
+    background: rgb(5, 15, 70);
+    color: #fff;
+  }
   .none {
     display: none;
   }

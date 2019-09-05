@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:57:29
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 17:40:35
+ * @Last Modified time: 2019-09-05 14:18:23
  */
 import React, { Component } from 'react'
 import { Icon, Tooltip, Button, Modal, Input, message } from 'antd'
@@ -95,7 +95,6 @@ class PagePanel extends Component {
       message.error('当前静态数据源已存在!')
       return
     }
-
     e.setState({
       modalAction: 'edit', // 进入编辑模式
       dataSourceType: name,
@@ -120,12 +119,11 @@ class PagePanel extends Component {
     this.setState({
       dataSourceList
     })
-
     const target = isNumber ? 'value' : 'key'
     setTimeout(() => {
-      const input = this.refs[target +(dataSourceList.length-1)].input
+      const input = this.refs[target + (dataSourceList.length - 1)].input
       input.focus()
-    },200)
+    }, 200)
   }
   // 删除一条数据源条目
   btnRemoveDataSourceItem (item, index) {
@@ -164,18 +162,16 @@ class PagePanel extends Component {
 
   // 焦点事件
   focusHandle (target, index, e) {
-    const len = this.state.dataSourceList.length    
+    const len = this.state.dataSourceList.length
     if (index < len) {
       const input = this.refs[target + index].input
       input.focus()
-    }else {
+    } else {
       // alert('新增')
       this.modalAddHandle()
     }
     // input.setSelectionRange(0, input.value.length) //是否全选当前文本
-
   }
-
   render () {
     const { dataSource, toggle } = this.props
     return (

@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-29 20:04:53
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-04 17:50:11
+ * @Last Modified time: 2019-09-05 11:29:44
  */
 
 export const GRID_COL_TIP = '栅格把每行平均分成24列'
@@ -11,3 +11,4 @@ export const DATABIND_MODEL_TIP = '把当前组件值、数据表字段绑定到
 export const STATIC_DATABIND_SOURCE_TIP = '预设列表数据源,在当前页面手动添加条目'
 export const DYMAIC_DATABIND_SOURCE_TIP = '列表数据源,通过接口返回'
 export const STATIC_SOURCE_TIP = '静态数据源是用于如:select, radio, checkbox 等组件使用的数据列表'
+export const CSS_CLASS_TIP = '标准的class名称, 多个请用空格分开'

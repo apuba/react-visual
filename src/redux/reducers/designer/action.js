@@ -10,11 +10,12 @@ export const updateBaseState = (key, value) => ({
 })
 
 // 更新当前动态拖拽的组件
-export const updateDynamicComponent = component => (
+export const updateDynamicComponent = (component, action = 'update') => (
   {
     type: types.UPDATE_DYNAMICCOMPONENT_LIST, // 这里的 UPDATE_DYNAMICCOMPONENT_LIST 的type是与reducer里的验证有关
     payload: {
-      component
+      component,
+      action
     }
   }
 )

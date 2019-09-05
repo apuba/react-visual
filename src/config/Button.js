@@ -2,9 +2,10 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:01:17
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-08-29 18:23:15
+ * @Last Modified time: 2019-09-05 13:48:29
  */
 import { gridValue, grid } from './Base'
+import * as tips from './tipTypes'
 
 export default {
   grid: gridValue,
@@ -17,7 +18,22 @@ export default {
   config: { // 组件可配置选项, 出现在编辑属性页面上的参数
     grid,
     style: { // 固定值
-      label: '样式配置'
+      label: '样式配置',
+      props: {
+        width: {
+          label: '宽度',
+          value: ''
+        },
+        color: {
+          label: '文本颜色',
+          value: ''
+        },
+        className: {
+          label: 'CSS样式名',
+          value: '',
+          tip: tips.CSS_CLASS_TIP
+        }
+      }
     },
     base: { // 固定值
       label: '通用属性',

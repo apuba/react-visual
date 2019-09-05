@@ -3,6 +3,12 @@ import _ from 'lodash'
 
 const initialState = {
   menus: [], // 组件菜单
+  css: `.color {
+    color: #ff0000;
+    text-align: center;
+    background-color: #ffdffb;
+    }`,
+  tabActiveKey: 'designer', // 设计器或代码之间切换
   dataSource: {
     static: {
       testList: [
@@ -88,14 +94,24 @@ const TraversalObject = (obj) => {
 
 export default (state = initialState, action) => {
   const { dataSource } = state
-
+  let newState = {}
   switch (action.type) {
     case types.UPDATE_DYNAMICCOMPONENT_LIST:
       const { component } = action.payload
-      return {
-        ...state,
-        dynamicComponentList: [...state.dynamicComponentList, component]
+      if (action.payload.action === 'reload') {
+        newState = {
+          ...state,
+          dynamicComponentList: [],
+          editComponentId: null,
+          activeId: 'dom_0'
+        }
+      } else {
+        newState = {
+          ...state,
+          dynamicComponentList: [...state.dynamicComponentList, component]
+        }
       }
+      return newState
     case types.UPDATE_TOGGLE:
       const { domId } = action.payload
       const toggle = _.clone(state.toggle)
@@ -124,10 +140,9 @@ export default (state = initialState, action) => {
         draggable
       }
     case types.UPDATE_BASE_STATE:
-      const newState = updateBaseStore(state, action.payload.key, action.payload.value)
+      newState = updateBaseStore(state, action.payload.key, action.payload.value)
       return newState
     case types.UPDATE_DATASOURCE_STATIC:
-      debugger
       if (action.payload.action === 'remove') {
         delete dataSource.static[action.payload.key]
       } else {

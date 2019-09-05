@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:56:44
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 00:54:18
+ * @Last Modified time: 2019-09-05 14:16:14
  */
 import React, { Component } from 'react'
 import { Icon, Select, Input, Tooltip, Divider } from 'antd'
@@ -25,7 +25,6 @@ class EditorPanel extends Component {
    * @memberof Designer
    */
    updateEditComponent = _.debounce((category, type, label, val, obj) => {
-     debugger
     if (!category && !type) {
       console.error('参数配置错误: 缺少category 或 type 参数')
       return
@@ -43,11 +42,12 @@ class EditorPanel extends Component {
     } else if (type === 'slot') {
       config.slot = val // 当前渲染的内容
     } else if (val === '-' && config.props[type]) { // 如果值为 '-',则删除掉这属性
-     debugger
       delete config.props[type]
     } else {
       config.props[type] = val // 当前渲染的属性
     }
+
+
     this.props.updateBaseState('timespan', 'ver:' + new Date().getTime()) // 更新视图与状态
     this.setState({})
     console.log('编辑属性完成',obj)
@@ -108,6 +108,12 @@ class EditorPanel extends Component {
       // 通过这个配置获取对应数据源，绑定到对应当前组件
     }
   }
+
+  // 新增样式
+  addStyleHandle (style, e) {
+    debugger
+    alert('请添加样式编辑组件,弹窗出来')
+  }
   // 创建组件的属性
   renderProps (config, type) {
     switch (type) {
@@ -142,8 +148,20 @@ class EditorPanel extends Component {
       const id = `panel_${category}_${obj.id}` // 编辑页面的id
       return (item.props && <section className='page_designer_prop_section' key={category}>
         <header>
+          { category === 'style' && <span className='fr'>
+            <a style={{marginRight: '10px'}}>
+                <Tooltip title='编辑代码'>
+                  <Icon type='code' onClick={this.addStyleHandle.bind(this, obj.config.style)} />
+                </Tooltip>
+            </a>
+            <a>
+              <Tooltip title='增加样式'>
+                <Icon type='plus' onClick={this.addStyleHandle.bind(this, obj.config.style)} />
+              </Tooltip>
+          </a>
+          </span>}
           <a onClick={() => this.props.updateToggle(id)}>
-            <Icon type='caret-down' /> {item.label}
+            <Icon type={ toggle.indexOf(id) === -1 ? 'caret-down' : 'caret-up' } /> {item.label}
           </a>
         </header>
         <ul  className={toggle.indexOf(id) > -1 ? 'none' : ''}>
