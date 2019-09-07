@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-02 17:57:29
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 14:18:23
+ * @Last Modified time: 2019-09-07 17:27:25
  */
 import React, { Component } from 'react'
 import { Icon, Tooltip, Button, Modal, Input, message } from 'antd'
@@ -111,7 +111,21 @@ class PagePanel extends Component {
     const { dataSourceList } = this.state
     const lastItem = dataSourceList[dataSourceList.length - 1]
     const isNumber = /^\d+$/.test(lastItem.key)
-    const key = !lastItem ? '0' : (isNumber ? lastItem.key * 1 + 1 : '') // 如果是数字则给key递增
+    const isEn = /^[a-zA-Z]$/.test(lastItem.key) // 是否为单个字母
+    // const key = !lastItem ? '0' : (isNumber ? lastItem.key * 1 + 1 : '') // 如果是数字则给key递增
+    let key = ''
+    if (isNumber) {
+      key = lastItem.key * 1 + 1 // 如果是数字则给key递增
+    } else {
+      const en = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+      if (isEn) {
+        const isLowerCase = en.indexOf(lastItem.key) > -1 // 是否为小写
+        const index = en.indexOf(lastItem.key.toLowerCase()) // 获取当前字母对应的位置
+        key = en[index + 1] // 下一个字母
+        key = !isLowerCase ? key.toUpperCase() : key
+      }
+    }
+
     dataSourceList.push({
       key,
       value: ''
@@ -119,7 +133,7 @@ class PagePanel extends Component {
     this.setState({
       dataSourceList
     })
-    const target = isNumber ? 'value' : 'key'
+    const target = isNumber || isEn ? 'value' : 'key'
     setTimeout(() => {
       const input = this.refs[target + (dataSourceList.length - 1)].input
       input.focus()

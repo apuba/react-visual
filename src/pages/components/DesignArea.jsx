@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-09-03 16:30:28
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 14:48:28
+ * @Last Modified time: 2019-09-06 11:10:54
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -161,7 +161,7 @@ class DesignArea extends Component {
         padding: gutter
       }
       return (
-        <span
+        <div
           className={'page_designer_item ' + col + (this.props.activeId === domId
             ? ' isactive'
             : '')}
@@ -174,7 +174,7 @@ class DesignArea extends Component {
           </Tooltip>
           <label>{config.grid.label}</label>
           <span className='isComponent'>{React.createElement(type, props, children)}</span>
-        </span>
+        </div>
       )
     } else {
       props.key = index

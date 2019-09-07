@@ -8,6 +8,11 @@ const initialState = {
     text-align: center;
     background-color: #ffdffb;
     }`,
+  jsCode: `
+  function t (input) {
+    alert(input)
+  }
+  `,
   tabActiveKey: 'designer', // 设计器或代码之间切换
   dataSource: {
     static: {

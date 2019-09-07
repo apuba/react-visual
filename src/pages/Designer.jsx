@@ -2,7 +2,7 @@
  * @Author: houxingzhang
  * @Date: 2019-08-28 20:00:24
  * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 20:35:23
+ * @Last Modified time: 2019-09-07 16:44:35
  */
 import React, { Component } from 'react'
 import {
@@ -39,8 +39,6 @@ class Designer extends Component {
   renderJSONtoJSX () {
     const { dynamicComponentList } = this.props
     const dependComponents = []
-    const element = []
-
     dynamicComponentList.forEach(item => {
       dependComponents.push(item.name) // 依赖的组件
     })
@@ -70,6 +68,11 @@ class Designer extends Component {
     }
     render(){
       return(<div class='ant-row design_preview'>
+      <style>
+      {\`
+      ${this.renderObjToJSX(this.props.css)}
+      \`}
+      </style>
       ${this.renderElementtoJSX(dynamicComponentList).replace(/\n    /, '')}
       </div>)
     }
@@ -81,10 +84,16 @@ class Designer extends Component {
   // 对象转为JSX
   renderObjToJSX (obj) {
     let attrs = ''
-    Object.keys(obj).forEach(name => {
-      attrs += ` ${name}: ${JSON.stringify(obj[name])}, \n        `
-    })
-
+    switch (typeof obj) {
+      case 'object':
+        Object.keys(obj).forEach(name => {
+          attrs += ` ${name}: ${JSON.stringify(obj[name])}, \n        `
+        })
+        break
+      case 'string':
+        attrs = obj
+        break
+    }
     return attrs
   }
 
@@ -121,14 +130,13 @@ class Designer extends Component {
       const gridStyle = {
         padding: gutter
       }
-   
       result += `
       ${indent}
-      <span key='${el.name + '_' + el.id}' id='${el.name + '_' + el.id}' className={'${col}'} style={${JSON.stringify(gridStyle)}}>
+      <div key='${el.name + '_' + el.id}' id='${el.name + '_' + el.id}' className={'${col}'} style={${JSON.stringify(gridStyle)}}>
         <${el.name} ${this.renderProps(el.config)}>
         ${this.renderChildrensAndContainer(el.config)}
         </${el.name}>
-      </span>`
+      </div>`
     })
     return result
     /*
@@ -210,15 +218,19 @@ class Designer extends Component {
                 <Tooltip title='自定义CSS样式' >
                   <Button type='primary' shape='circle' icon='container' />
                 </Tooltip>
+                <Tooltip title='复制设计' >
+                  <Button type='primary' shape='circle' icon='copy' onClick={this.reloadComponents.bind(this)} disabled={this.props.dynamicComponentList.length === 0} />
+                </Tooltip>
                 <Tooltip title='重做，清除全部组件' >
                   <Button type='danger' shape='circle' icon='reload' onClick={this.reloadComponents.bind(this)} disabled={this.props.dynamicComponentList.length === 0} />
                 </Tooltip>
+
               </div>
               <Tabs onChange={this.tabCallback.bind(this)} type='card' activeKey={this.props.tabActiveKey}>
                 <TabPane tab='设计器' key='designer'>
                   <DesignArea />
                 </TabPane>
-                <TabPane tab='代码' key='code'>
+                <TabPane tab='源代码' key='code'>
                   <Code code={this.renderJSONtoJSX()} />
                 </TabPane>
               </Tabs>
@@ -233,8 +245,8 @@ class Designer extends Component {
 
 const mapStateToProps = store => {
   const { designer } = store
-  const { dynamicComponentList, timespan, dataSource, tabActiveKey } = designer
-  return { dynamicComponentList, timespan, dataSource, tabActiveKey }
+  const { dynamicComponentList, timespan, dataSource, tabActiveKey, css } = designer
+  return { dynamicComponentList, timespan, dataSource, tabActiveKey, css }
 }
 
 export default connect(mapStateToProps, { updateDynamicComponent, updateBaseState })(Designer)
