@@ -103,11 +103,9 @@ class Preivew extends Component {
       }}>
         <HY.Button onClick={ this.getFun.bind(this, jsx.js) }>按钮哦</HY.Button>
       {/*   <div dangerouslySetInnerHTML={{ __html: jsx.html}}></div> */}
-   
        {
          this.createEleHTML(jsx.button)
        }
-       
       </div>
     )
   }
