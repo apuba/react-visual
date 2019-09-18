@@ -31,8 +31,6 @@ const btnRemoveDataSourceItem = () => {
 
 function StaticDataSource(props) {
   const { register, handleSubmit, errors } = useForm() // 引入 hookform 表单校验
-
-  
   return (
     <Modal
           title={props.state.modalTitle}

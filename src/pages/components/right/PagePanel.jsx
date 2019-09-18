@@ -6,11 +6,11 @@
  */
 import React, { Component } from 'react'
 import { Icon, Tooltip, Button, Modal, Input, message } from 'antd'
-import * as tips from '../../../config/tipTypes'
+import * as tips from '@config/tipTypes'
 import { connect } from 'react-redux'
-import { updateBaseState, updateToggle, updateDataSourceStatic } from '../../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle, updateDataSourceStatic } from '@redux/reducers/designer/action'
 import useForm from 'react-hook-form' // 引入hookForm 表单校验
-import * as validate from '../../../commons/validate'
+import * as validate from '@commons/validate'
 import _ from 'lodash'
 
 const { confirm } = Modal

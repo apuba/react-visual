@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { Layout, Tooltip, Button } from 'antd'
 import PagePanel from './PagePanel'
 import EditorPanel from './EditorPanel'
-import { updateBaseState, updateToggle } from '../../../redux/reducers/designer/action'
+import { updateBaseState, updateToggle } from '@redux/reducers/designer/action'
 import _ from 'lodash'
 
 const { Sider } = Layout
@@ -38,7 +38,7 @@ class RightSider extends Component {
               <Tooltip title='删除当前组件' placement='bottomRight'>
                 <Button type='danger' size='small' icon='close' shape='circle' className='fr' onClick={this.deleteCurrentComponent.bind(this)} />
               </Tooltip>
-              {this.props.editComponentId && this.getEditComponentById(this.props.editComponentId).config.title}组件属性
+              {this.props.editComponentId && this.getEditComponentById(this.props.editComponentId).config.title}控件属性
             </h4>
             <div data-desc='属性配置区'>
               <EditorPanel />

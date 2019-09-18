@@ -7,8 +7,9 @@
 import React, { Component } from 'react'
 import { Layout, Icon, Menu } from 'antd'
 import { connect } from 'react-redux'
-import menulist from '../../../assets/data/compontMenu'
-import { updateDraggable, updateBaseState } from '../../../redux/reducers/designer/action'
+import menulist from '@assets/data/compontMenu'
+import tableList from '@assets/data/tableMenu'
+import { updateDraggable, updateBaseState } from '@redux/reducers/designer/action'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -36,7 +37,10 @@ class LeftSider extends Component {
             draggable='true'
             id={'comp_' + item.key}
             onDragStart={e => this.dragStartHandle(e, item)}
-            key={item.key}>{item.name}</div>
+            key={item.key}>
+              <Icon type={item.icon} />
+              {item.name}
+          </div>
         </Menu.Item>
       } else {
         return (
@@ -70,11 +74,18 @@ class LeftSider extends Component {
       })
     }
   }
-
+  
   render () {
     return (
       <Sider className='page_designer_sider page_designer_compent' width='240'>
-        <h4 className='page_designer_title'>组件区 </h4>
+        <h4>表数据结构</h4>
+        <Menu
+          mode='inline'
+          openKeys={this.state.openKeys}
+          onOpenChange={this.onOpenChange.bind(this)}
+          className='page_designer_menu'>
+        </Menu>
+        <h4 className='page_designer_title'>控件类型 </h4>
         <Menu
           mode='inline'
           openKeys={this.state.openKeys}

@@ -1,18 +1,25 @@
+/*
+ * @Description: 
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-18 11:38:56
+ */
 import * as types from './actionType'
 import _ from 'lodash'
 
 const initialState = {
   menus: [], // 组件菜单
-  css: `.color {
+  codeEditorLanguage:'', // 编辑器的代码语言
+  css: `.red {
     color: #ff0000;
-    text-align: center;
-    background-color: #ffdffb;
     }`,
-  jsCode: `
+  js: `
   function t (input) {
     alert(input)
   }
   `,
+  showCodeEditor: false, // 是否显示代码编辑器
   tabActiveKey: 'designer', // 设计器或代码之间切换
   dataSource: {
     static: {
@@ -70,6 +77,7 @@ const initialState = {
  * @param {*} value 值
  */
 const updateBaseStore = (state, key, value) => {
+  console.log(value)
   return {
     ...state,
     [key]: value

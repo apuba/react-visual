@@ -1,0 +1,35 @@
+<!--
+ * @Description: 
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 19:41:08
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-17 19:41:08
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<title>Monaco Editor</title>
+	<link data-name="vs/editor/editor.main" rel="stylesheet" href="./lib/package/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+<body>
+	<section id="editor-container">
+     <!--    <select class="theme-picker" id="select-theme">
+            <option value="dark">dark</option>
+            <option value="blank">blank</option>
+            <option value="black">black</option>
+        </select> -->
+        <div id="editor"></div>
+	</section>
+	<script src="./lib/package/jquery.js"></script>
+	<script>var require = { paths: { 'vs': 'lib/package/min/vs' } };</script>
+	<script src="lib/package/min/vs/loader.js"></script>
+	<script src="lib/package/min/vs/editor/editor.main.nls.js"></script>
+	<script src="lib/package/min/vs/editor/editor.main.js"></script>
+	<script src="./main.js"></script>
+</body>
+</html>
+

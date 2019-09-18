@@ -6,7 +6,7 @@
  */
 
 import RJSelect from './RJSelect'
-var allComponents = require('antd')
+import * as allComponents from 'antd'
 Object.assign(allComponents, {
   RJSelect
 })

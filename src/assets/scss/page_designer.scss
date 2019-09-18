@@ -1,5 +1,32 @@
 $primaryColor: #1890ff;
 
+html, body {
+  min-height:100%;
+}
+#root {
+  height: 100%;
+}
+#vseditor_box {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba($color: #000, $alpha: 0.7);
+  display: none;
+}
+#vseditor_box_container {
+  background: #333;
+}
+.close-iframe {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+}
+#vseditor_box_container {
+  margin: 0 auto;
+  transform: translate(0,32%);
+}
 .page_designer {
   background: #fff;
   &_sider {
@@ -62,6 +89,7 @@ $primaryColor: #1890ff;
   &_title {
     padding: 10px 0;
     font-size: 16px;
+    
   }
   &_tip {
     color: #ccc;
@@ -236,3 +264,11 @@ $primaryColor: #1890ff;
       border: 1px solid #ff0000;
     }
   }
+#css_editor_container,#page_preview_container{
+  position:absolute;
+  z-index: 100;
+  background:#fff;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}

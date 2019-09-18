@@ -1,38 +1,33 @@
-/* 下拉选择器组件配置
- * @Author: houxingzhang
- * @Date: 2019-08-28 20:00:43
- * @Last Modified by: houxingzhang
- * @Last Modified time: 2019-09-05 13:47:20
+/*
+ * @Description: 下拉选择器组件配置
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-18 17:54:31
  */
-import { gridValue, grid } from './Base'
+
+import { gridValue, grid, style } from './Base'
 import * as tips from './tipTypes'
 
 export default {
   grid: gridValue,
   type: 'Select', // 组件的类型
-  title: '下拉选择器',
+  title: '下拉框',
   props: { // 拖动出组件时渲染的默认属性
     placeholder: '请输入文本',
     type: 'text'
   },
   config: { // 组件可配置选项, 出现在编辑属性页面上的参数
-    grid,
-    style: { // 固定值
-      label: '样式配置',
+    grid: {
+      label: '栅格设置',
       props: {
-        width: {
-          label: '宽度',
-          value: ''
-        },
-        color: {
-          label: '文本颜色',
-          value: ''
-        },
-        className: {
-          label: 'CSS样式名',
-          value: '',
-          tip: tips.CSS_CLASS_TIP
-        }
+       ...grid
+      }
+    },
+    style: { // 固定值
+      label: '样式配置',    
+      props: {
+        ...style
       }
     },
     base: { // 固定属性
@@ -41,6 +36,24 @@ export default {
         disabled: {
           label: '是否禁用',
           value: false
+        },
+        mode: {
+          label: '是否多选',
+          value: '-',
+          options: [
+            {
+              key:'-',
+              value:'单选'
+            },
+            {
+              value:'多选',
+              key:'multiple'
+            },
+            {
+              value:'标签',
+              key:'tags'
+            }
+          ]
         }
       }
     },
