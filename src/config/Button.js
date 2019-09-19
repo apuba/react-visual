@@ -12,8 +12,6 @@
  * @Last Modified time: 2019-09-05 13:48:29
  */
 import { gridValue, grid, style } from './Base'
-import * as tips from './tipTypes'
-
 export default {
   grid: gridValue,
   type: 'Button',

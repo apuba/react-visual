@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 19:23:35
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-18 12:20:50
+ * @LastEditTime: 2019-09-19 12:19:18
  */
 import React, {Component} from 'react';
 import {EditorContainer} from "@utils/iframe";
@@ -29,7 +29,7 @@ class CodeEditorComp extends Component {
                 }
                 if (language === 'css') {
                     updateBaseState('css', value)
-                } else if (language === 'css') {
+                } else if (language === 'javascript') {
                     updateBaseState('js', value)
                 };
             }

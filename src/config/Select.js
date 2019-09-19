@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-18 17:54:31
+ * @LastEditTime: 2019-09-19 17:59:57
  */
 
 import { gridValue, grid, style } from './Base'
@@ -14,7 +14,7 @@ export default {
   type: 'Select', // 组件的类型
   title: '下拉框',
   props: { // 拖动出组件时渲染的默认属性
-    placeholder: '请输入文本',
+    placeholder: '请选择',
     type: 'text'
   },
   config: { // 组件可配置选项, 出现在编辑属性页面上的参数
@@ -61,7 +61,14 @@ export default {
       label: '校验规则'
     },
     events: { // 固定属性
-      label: '事件方法'
+      label: '事件方法',
+      props: {
+        onChange: {
+          label: '值改变事件',
+          value: '',
+          component: 'JavascriptCodeComp' // 显示使js选择组件
+        },
+      }
     },
     dataBind: { // 固定属性
       label: '数据绑定配置',
@@ -72,14 +79,16 @@ export default {
           tip: tips.DATABIND_MODEL_TIP
         },
         staticDataSource: { // 固定属性 会读取当前设计器的state的DataSource.static数据
+          component: 'StaticDataSourceComp',  // 显示使用静态数据源组件
           label: '静态数据源',
-          value: '-',
+          value: '无',
           options: [],
           tip: tips.STATIC_DATABIND_SOURCE_TIP
         },
-        dynamicDataSource: { // 固定属性
+        dynamicDataSource: {  // 固定属性 会读取当前设计器的state的DataSource.dynamic数据
+          component: 'DynamicDataSourceComp', 
           label: '动态数据源',
-          value: '',
+          value: '无',
           options: [],
           tip: tips.DYMAIC_DATABIND_SOURCE_TIP
         }

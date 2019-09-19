@@ -5,7 +5,7 @@
  * @Last Modified time: 2019-09-05 14:16:14
  */
 import React, { Component } from 'react';
-import { Icon, Select, Input, Tooltip, Divider } from 'antd';
+import { Icon, Select, Input, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import {
   updateBaseState,
@@ -28,7 +28,6 @@ class EditorPanel extends Component {
    * @memberof Designer
    */
   updateEditComponent = _.debounce((category, type, label, val, obj) => {
-
     if (!category && !type) {
       console.error('参数配置错误: 缺少category 或 type 参数');
       return;
@@ -39,7 +38,7 @@ class EditorPanel extends Component {
       val = true;
     } else if (val === 'false') {
       val = false;
-    } 
+    }
 
     config.config[category].props[type].value = val; // 更新配置的值 gutter
     if (category === 'grid') {
@@ -57,7 +56,7 @@ class EditorPanel extends Component {
     }
 
     this.props.updateBaseState('timespan', 'ver:' + new Date().getTime()); // 更新视图与状态
-    this.setState({});
+    // this.setState({});
     console.log('编辑属性完成', obj);
   }, 500);
 
@@ -69,23 +68,7 @@ class EditorPanel extends Component {
   // 创建编辑页面的下拉选项
   createEditorPanelOption(prop, type) {
     let options = [];
-    if (type === 'staticDataSource') {
-      // 当前为静态数据源
-      const list = this.props.dataSource.static; // 静态数据源
-      let newOpt = Object.keys(list).map(name => {
-        return {
-          key: name,
-          value: name
-        };
-      });
-      options = [
-        {
-          key: '-',
-          value: '无'
-        },
-        ...newOpt
-      ];
-    } else if (prop.options) {
+    if (prop.options) {
       options = prop.options;
     } else if (typeof prop.value === 'boolean') {
       // 布尔值
@@ -113,6 +96,7 @@ class EditorPanel extends Component {
 
   // 下拉菜单添加数据源的事件
   selectAddDataSourceHandle(type, e) {
+    debugger;
     if (type === 'staticDataSource') {
       this.props.updateBaseState('editComponentId', null);
       this.props.updateBaseState('activeId', 'dom_0');
@@ -124,86 +108,97 @@ class EditorPanel extends Component {
   }
 
   // 编辑全局 css
-  cssCodeEditHandle() {
+  cssCodeEditHandle(e) {
     this.props.updateBaseState('showCodeEditor', true);
     this.props.updateBaseState('codeEditorLanguage', 'css');
+  }
+  jsCodeEditHandle(e) {
+    this.props.updateBaseState('showCodeEditor', true);
+    this.props.updateBaseState('codeEditorLanguage', 'javascript');
   }
   // 新增样式
   addStyleHandle(style, e) {
     alert('请弹出样式选择窗');
   }
-  // 创建组件的属性
+  // 创建组件的其他属性
   renderProps(config, type) {
-    switch (type) {
+    /*   switch (type) {
       case 'staticDataSource':
       case 'dynamicDataSource':
-        return {
-          dropdownRender: (menu, props) => (
-            <div>
-              {menu}
-              <Divider style={{ margin: '4px 0' }} />
-              <div
-                data-desc="自定义条目"
-                style={{ padding: '0 0 10px 10px', cursor: 'pointer' }}
-                onClick={this.selectAddDataSourceHandle.bind(this, type)}
-              >
-                <Icon type="plus" /> 添加数据源
-              </div>
-            </div>
-          )
-        };
+        return {}
       default:
         return {};
-    }
+    } */
   }
 
-  // 渲染属性页面上对应属性的显示组件
+  // 渲染属性页面上对应属性的显示组件 ---------------------------------------------------
   renderPropsComponent(category, prop, attrs, type, obj) {
-    const { js, css } = this.props;
+    const { js, css, dataSource } = this.props;
     const [inputId, selectId] = [
       `input_${type}_${obj.id}`,
       `select_${type}_${obj.id}`
     ];
 
-    // 如果自定义了组件类型 
+    // 如果自定义了组件类型
     if (prop.component) {
       let children = '';
-      let attribute = {};
 
+      let attribute = {
+        attrs,
+        handleChange: val => this.updateEditComponent(category, type, prop.label, val, obj),
+        value: prop.value
+      };
       switch (prop.component) {
         case 'ClassNameComp': // css样式组件
-          const reg = /[\.]?[a-zA-z0-9_-]+\s{0,}{/gm;
-          let cssArray = css.match(reg); // 匹配出所有样式
-          let cssList = []
-          if (cssArray && cssArray.length > 0){
-            cssList = cssArray.map(item => item.replace(/\s{0,}{/,''))
-          }
           attribute = {
-            attrs,
+            ...attribute,
+            type,     
+            css,
+            id: selectId,           
+            addDataHandle: this.cssCodeEditHandle.bind(this)
+          };
+          break;
+        case 'JavascriptCodeComp': // css样式组件
+          attribute = {
+            ...attribute,
+            js,
+            id: selectId,           
+            addDataHandle: this.jsCodeEditHandle.bind(this)
+          };
+          break;
+        case 'ColorInputComp': // 颜色选择组件
+          attribute = {
+            ...attribute,
             id: selectId,
-            handleChange: val =>
-              this.updateEditComponent(category, type, prop.label, val, obj),
-            value: prop.value,
-            css: cssList
+            handleChange: e => {
+              e.persist();
+              this.updateEditComponent(
+                category,
+                type,
+                prop.label,
+                e.target.value,
+                obj
+              );
+            },
+            value: prop.value
+          };
+          break;
+        case 'StaticDataSourceComp': // 静态数据源
+          attribute = {
+            ...attribute,           
+            id: selectId,           
+            data: dataSource.static, // 静态数据
+            addDataHandle: this.selectAddDataSourceHandle.bind(this, type)
           };
           break;
 
-          case 'ColorInputComp': // 颜色选择组件
-              attribute = {
-                attrs,
-                id: selectId,
-                handleChange: e => {
-                  e.persist();
-                  this.updateEditComponent(
-                    category,
-                    type,
-                    prop.label,
-                    e.target.value,
-                    obj
-                  );
-                },
-                value: prop.value
-              };
+        case 'DynamicDataSourceComp':
+          attribute = {
+            ...attribute,           
+            id: selectId,           
+            data: dataSource.dynamic, // 动态数据
+            addDataHandle: this.selectAddDataSourceHandle.bind(this, type)
+          };
           break;
         default:
           break;

@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-17 17:21:24
+ */
 export const json = ` 
 /*
 * 这里声明要引入的组件
@@ -54,6 +61,6 @@ export const html = `<div class='ant-row design_preview'>
 
 export const js = `
 console.log("字符串js已运行", name);
-e.runCustomJS(name)
+e.runCustomJS(name,e)
 `
 export const button = '<Button>新的按钮</Button>'

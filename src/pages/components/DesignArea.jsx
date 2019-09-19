@@ -6,7 +6,7 @@
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Select, Tooltip, Button, Icon, Divider } from 'antd'
+import { Select, Tooltip, Button } from 'antd'
 import componentConfig from '../../config/index'
 
 import _ from 'lodash'
@@ -15,8 +15,8 @@ import { updateDynamicComponent, updateEditComponentId, updateDraggable, updateB
 const allComponents = require('../../components').default
 const { Option } = Select
 class DesignArea extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       componentIndex: 0
     }
@@ -54,12 +54,6 @@ class DesignArea extends Component {
   // 获取对应组件类型及相关配置
   getComponent (type) {
     if (!type || !type.key) return
-    /*   const name = type
-      .key
-      .substring(0, 1)
-      .toUpperCase() + type
-      .key
-      .substring(1) // 保障首字大写 */
     const name = type.key
     const component = allComponents[name] // 组件类型
     const config = _.cloneDeep(componentConfig[name]) // 组件配置
@@ -131,7 +125,7 @@ class DesignArea extends Component {
       case 'select':
       case 'Select':
         if (config.props.staticDataSource) { // 有静态数据
-          props.key = config.type + new Date().getTime() // 添加标识，更新时，去掉当前选中的值
+          // props.key = config.type + new Date().getTime() // 添加标识，更新时，去掉当前选中的值
         }
         break
       default:
@@ -145,7 +139,7 @@ class DesignArea extends Component {
         props.style[name] = baseStyle[name].value
         delete props[name] // 移除不必要的props
       }
-    })
+    }) 
     return props
   }
   // 动态渲染拖拽生成的组件 ------------------------------------------------------------------------------------

@@ -1,33 +1,43 @@
 /*
- * @Description: css样式组件
+ * @Description: 静、动态数据源组件的公共组件
  * @Author: 侯兴章
- * @Date: 2019-09-18 12:06:12
+ * @Date: 2019-09-19 10:53:30
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-19 15:15:34
+ * @LastEditTime: 2019-09-19 18:01:29
  */
 import React from 'react';
 import { Select, Divider, Icon } from 'antd';
 const { Option } = Select;
-const ClassNameComp = ({
+
+const DataSourceComp = ({
   handleChange,
   attrs,
   value,
   id,
-  css,
+  type,
+  data,
   addDataHandle
 }) => {
   let children = [];
-  const reg = /[\.]?[a-zA-z0-9_-]+\s*{/gm;
-    let cssArray = css.match(reg); // 匹配出所有样式
-    let cssList = [];
-    if (cssArray && cssArray.length > 0) {
-      cssList = cssArray.map(item => item.replace(/\s*{/, ''));
-    }
+  let options = [];
+  if (data) {
+    let newOpt = Object.keys(data).map(name => {
+      return {
+        key: name,
+        value: name
+      };
+    });
+    options = [
+      {
+        key: '-',
+        value: '无'
+      },
+      ...newOpt
+    ];
 
-  if (cssList && cssList.length > 0) {
-    children = cssList.map((option, index) => (
-      <Option key={option + index} value={option.replace('.', '')}>
-        {option}
+    children = options.map(option => (
+      <Option key={option.key} value={option.key}>
+        {option.value}
       </Option>
     ));
   }
@@ -43,21 +53,21 @@ const ClassNameComp = ({
         {...attrs}
         defaultValue={value}
         className="input"
-        mode="multiple"
         size="small"
         key={id}
         id={id}
+        data-ref={id}
         onChange={handleChange}
         dropdownRender={(menu, props) => (
           <div>
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             <div
-              data-desc="自定义条目"              
+              data-desc="自定义条目"            
               onClick={addDataHandle}
               className="dropdownRender"
             >
-              <Icon type="plus" /> 添加样式
+              <Icon type="plus" /> 添加数据源
             </div>
           </div>
         )}
@@ -68,4 +78,4 @@ const ClassNameComp = ({
   );
 };
 
-export default ClassNameComp;
+export default DataSourceComp;

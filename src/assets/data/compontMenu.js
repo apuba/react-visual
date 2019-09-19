@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-17 17:21:24
+ */
 export default [
   {
     name: '基础控件',
@@ -6,7 +13,7 @@ export default [
     subMenus: [
       {
         name: '文本框控件',
-        key: 'Input',
+        key: 'HYInput',
         icon:'setting'
       }, {
         name: '按钮控件',

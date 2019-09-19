@@ -49,7 +49,7 @@ class Preivew extends Component {
   }
 
   runCustomJS (p) {
-    alert (p)
+    alert (`已经执行this方法体的函数，并获取传过来的参数变量为：${p}`)
   }
 
   getFun (js) {
@@ -104,7 +104,7 @@ class Preivew extends Component {
         <HY.Button onClick={ this.getFun.bind(this, jsx.js) }>按钮哦</HY.Button>
       {/*   <div dangerouslySetInnerHTML={{ __html: jsx.html}}></div> */}
        {
-         this.createEleHTML(jsx.button)
+        //  this.createEleHTML(jsx.button)
        }
       </div>
     )

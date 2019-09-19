@@ -3,14 +3,14 @@
  * @Author: 侯兴章
  * @Date:  2019-08-28  17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-19 11:56:20
+ * @LastEditTime: 2019-09-19 20:16:17
  */
 import { gridValue, grid, style } from './Base'
 import { DATABIND_MODEL_TIP } from './tipTypes'
 
 export default {
   grid: gridValue,
-  type: 'Input', // 组件的类型
+  type: 'HYInput', // 组件的类型
   title: '文本框',
   props: { // 拖动出组件时渲染的默认属性
     placeholder: '请输入文本',
@@ -56,20 +56,6 @@ export default {
           label: '是否禁用',
           value: false
         }
-        /* type: {
-          label: '是否多行文本',
-          value: 'text',
-          options: [ // 当配置属性包括 options的参数时,配置控件会转为select,并且使用当前参数做为下拉列表的选项
-            {
-              key: 'textarea',
-              value: '多行文本'
-            },
-            {
-              key: 'text',
-              value: '单行文本'
-            }
-          ]
-        } */
       }
     },
     validate: { // 固定值
@@ -80,19 +66,14 @@ export default {
       props: {
         onClick: {
           label: '点击事件',
-          value: '',
+          value: '无',
           component: 'JavascriptCodeComp' // 显示使js选择组件
         },
         onChange: {
           label: '值改变事件',
-          value: '',
+          value: '无',
           component: 'JavascriptCodeComp' // 显示使js选择组件
-        },
-        onPressEnter: {
-          label: '按下回车事件',
-          value: '',
-          component: 'JavascriptCodeComp' // 显示使js选择组件
-        }
+        }        
       }
     },
     dataBind: { // 固定值

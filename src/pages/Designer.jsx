@@ -44,6 +44,11 @@ class Designer extends Component {
     this.props.updateBaseState('showCodeEditor', true);
     this.props.updateBaseState('codeEditorLanguage', 'css');
   }
+  // 定制js代码
+  customerJavascript() {
+    this.props.updateBaseState('showCodeEditor', true);
+    this.props.updateBaseState('codeEditorLanguage', 'javascript');
+  }
   previewPage(ev) {
     /*  $("#page_preview_container").show()
 
@@ -93,7 +98,7 @@ class Designer extends Component {
       ${this.renderObjToJSX(this.props.css)}
       \`}
       </style>
-      ${this.renderElementtoJSX(dynamicComponentList).replace(/\n    /, '')}
+      ${this.renderElementtoJSX(dynamicComponentList).replace(/\n /, '')}
       </div>)
     }
   }
@@ -112,6 +117,8 @@ class Designer extends Component {
         break;
       case 'string':
         attrs = obj;
+        break;
+      default:
         break;
     }
     return attrs;
@@ -134,7 +141,7 @@ class Designer extends Component {
             config.props.staticDataSource
           ]; // 筛选出当前所属的静态数据源
           list.forEach(item => {
-            result += `<Select.Option key='${item.key}' value='${item.key}'>${item.value}</Select.Option>\n        `;
+            result += `<Select.Option key='${item.key}' value='${item.key}'>${item.value}</Select.Option>\n`;
           });
         }
         break;
@@ -253,8 +260,16 @@ class Designer extends Component {
                   <Button
                     type="primary"
                     shape="circle"
-                    icon="container"
+                    icon="build"
                     onClick={this.customerStyle.bind(this)}
+                  />
+                </Tooltip>
+                <Tooltip title="自定义JS函数代码">
+                  <Button
+                    type="primary"
+                    shape="circle"
+                    icon="calculator"
+                    onClick={this.customerJavascript.bind(this)}
                   />
                 </Tooltip>
                 <Tooltip title="复制设计">
@@ -262,7 +277,6 @@ class Designer extends Component {
                     type="primary"
                     shape="circle"
                     icon="copy"
-                    onClick={this.reloadComponents.bind(this)}
                     disabled={this.props.dynamicComponentList.length === 0}
                   />
                 </Tooltip>
@@ -274,6 +288,10 @@ class Designer extends Component {
                     onClick={this.reloadComponents.bind(this)}
                     disabled={this.props.dynamicComponentList.length === 0}
                   />
+                </Tooltip>
+
+                <Tooltip title="最大化">
+                  <Button type="primary" shape="circle" icon="border" />
                 </Tooltip>
               </div>
               <Tabs

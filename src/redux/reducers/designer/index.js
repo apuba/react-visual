@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-18 11:38:56
+ * @LastEditTime: 2019-09-19 20:11:19
  */
 import * as types from './actionType'
 import _ from 'lodash'
@@ -15,9 +15,17 @@ const initialState = {
     color: #ff0000;
     }`,
   js: `
-  function t (input) {
-    alert(input)
+  /* 必须为具名函数 */
+  function test (e) {
+    alert('kkk')
+    console.log(e)
   }
+
+  function goto (e) {
+    alert("it's ok")
+    console.log(e)
+  }
+  
   `,
   showCodeEditor: false, // 是否显示代码编辑器
   tabActiveKey: 'designer', // 设计器或代码之间切换
@@ -77,7 +85,6 @@ const initialState = {
  * @param {*} value 值
  */
 const updateBaseStore = (state, key, value) => {
-  console.log(value)
   return {
     ...state,
     [key]: value
