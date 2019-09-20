@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-19 20:11:19
+ * @LastEditTime: 2019-09-20 11:29:55
  */
 import * as types from './actionType'
 import _ from 'lodash'
@@ -17,13 +17,13 @@ const initialState = {
   js: `
   /* 必须为具名函数 */
   function test (e) {
-    alert('kkk')
     console.log(e)
+    alert('我是js编辑器里的代码TEST')
   }
 
   function goto (e) {
-    alert("it's ok")
     console.log(e)
+    alert("我是js编辑器里的代码GOTO")
   }
   
   `,

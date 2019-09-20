@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-17 17:21:24
+ */
 import * as types from './actionType'
 
 // 简单更一个状态
