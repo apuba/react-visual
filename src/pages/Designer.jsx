@@ -26,10 +26,6 @@ const { Content } = Layout;
 const { TabPane } = Tabs;
 
 class Designer extends Component {
-  /*   constructor(props) {
-    super(props)
-     
-  } */
   // 设计器与源码预览切换
   tabCallback(key) {
     // TODO: 源码预览切换,请进行编辑逻辑
@@ -49,7 +45,7 @@ class Designer extends Component {
     this.props.updateBaseState('showCodeEditor', true);
     this.props.updateBaseState('codeEditorLanguage', 'javascript');
   }
-  previewPage(ev) {
+  previewPage() {
     /*  $("#page_preview_container").show()
 
     new PreviewContainer({
@@ -135,7 +131,7 @@ class Designer extends Component {
         result = '这个是容器,需要再次编辑';
         break;
       case 'Select': // 可以绑定数据源的组件,
-        if (config.props.staticDataSource) {
+       /*  if (config.props.staticDataSource) {
           // 包含有静态数据源
           const list = this.props.dataSource.static[
             config.props.staticDataSource
@@ -143,7 +139,7 @@ class Designer extends Component {
           list.forEach(item => {
             result += `<Select.Option key='${item.key}' value='${item.key}'>${item.value}</Select.Option>\n`;
           });
-        }
+        } */
         break;
       default:
         break;
@@ -171,28 +167,6 @@ class Designer extends Component {
       </div>`;
     });
     return result;
-    /*
-
-     ${!el.config.slot ? '' : (el.config.childrens ? this.renderElementtoJSX(el.config.childrens) : el.config.slot)}
-    var result = ''
-    this.state.indent_space += '    '
-    data.forEach(d => {
-      if (d.hasDelete) return
-      console.log(d)
-      console.log(d.props)
-      result += `
-    ${this.state.indent_space}<${d.type}${this.renderProps(d.props, d)}>${
-  d.props.content
-    ? [d.props.content]
-    : d.childrens
-      ? this.renderElementtoJSX(d.childrens)
-      : ''
-}</${d.type}>
-    `
-    })
-    this.state.indent_space = this.state.indent_space.replace('    ', '')
-    result += `${this.state.indent_space}`
-    return result */
   }
   // 渲染属性
   renderProps(config) {
@@ -227,7 +201,7 @@ class Designer extends Component {
       okText: '确认',
       cancelText: '取消',
       title: '您确认要重做吗?',
-      content: `重做,将会把之前所有的组件给清空`,
+      content: '重做,将会把之前所有的组件给清空',
       onOk() {
         props.updateDynamicComponent(null, 'reload');
       },
@@ -244,65 +218,65 @@ class Designer extends Component {
               <div className="page_designer_toolbar">
                 <Tooltip title="预览">
                   <Button
-                    type="primary"
-                    shape="circle"
                     icon="read"
                     onClick={this.previewPage}
+                    shape="circle"
+                    type="primary"
                   />
                 </Tooltip>
                 <Tooltip title="数据源管理">
-                  <Button type="primary" shape="circle" icon="codepen" />
+                  <Button icon="codepen" shape="circle" type="primary" />
                 </Tooltip>
                 <Tooltip title="表单设置">
-                  <Button type="primary" shape="circle" icon="block" />
+                  <Button icon="block" shape="circle" type="primary" />
                 </Tooltip>
                 <Tooltip title="自定义CSS样式">
                   <Button
-                    type="primary"
-                    shape="circle"
                     icon="build"
                     onClick={this.customerStyle.bind(this)}
+                    shape="circle"
+                    type="primary"
                   />
                 </Tooltip>
                 <Tooltip title="自定义JS函数代码">
                   <Button
-                    type="primary"
-                    shape="circle"
                     icon="calculator"
                     onClick={this.customerJavascript.bind(this)}
+                    shape="circle"
+                    type="primary"
                   />
                 </Tooltip>
                 <Tooltip title="复制设计">
                   <Button
-                    type="primary"
-                    shape="circle"
-                    icon="copy"
                     disabled={this.props.dynamicComponentList.length === 0}
+                    icon="copy"
+                    shape="circle"
+                    type="primary"
                   />
                 </Tooltip>
                 <Tooltip title="重做，清除全部组件">
                   <Button
-                    type="danger"
-                    shape="circle"
+                    disabled={this.props.dynamicComponentList.length === 0}
                     icon="reload"
                     onClick={this.reloadComponents.bind(this)}
-                    disabled={this.props.dynamicComponentList.length === 0}
+                    shape="circle"
+                    type="danger"
                   />
                 </Tooltip>
 
                 <Tooltip title="最大化">
-                  <Button type="primary" shape="circle" icon="border" />
+                  <Button icon="border" shape="circle" type="primary" />
                 </Tooltip>
               </div>
               <Tabs
+                activeKey={this.props.tabActiveKey}
                 onChange={this.tabCallback.bind(this)}
                 type="card"
-                activeKey={this.props.tabActiveKey}
               >
-                <TabPane tab="设计器" key="designer">
+                <TabPane key="designer" tab="设计器" >
                   <DesignArea />
                 </TabPane>
-                <TabPane tab="源代码" key="code">
+                <TabPane key="code" tab="源代码" >
                   <Code code={this.renderJSONtoJSX()} />
                 </TabPane>
               </Tabs>

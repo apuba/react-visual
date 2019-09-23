@@ -1,8 +1,4 @@
-/* eslint-disable no-new-func */
 import { Component } from 'react';
-import { connect } from 'react-redux';
-import * as reduxAction from '../redux/reducers/designer/action';
-
 class BaseComp extends Component {
   constructor(props) {
     super(props);
@@ -41,16 +37,4 @@ class BaseComp extends Component {
     console.log('已经执行到BaseComp：' + params);
   }
 }
-
-const mapStateToProps = store => {
-  //   return store.designer;
-  const { designer } = store;
-  const { css, showCodeEditor, codeEditorLanguage, js } = designer;
-  return {designer}
-};
-
 export default BaseComp;
-
-/* export default connect(
-  mapStateToProps
-)(BaseComp); */

@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 19:23:35
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-20 11:59:19
+ * @LastEditTime: 2019-09-23 14:29:50
  */
 import React, { Component } from 'react';
 import { EditorContainer } from '@utils/iframe';
@@ -53,9 +53,9 @@ class CodeEditorComp extends Component {
     this.initComponent(css, language);
     return (
       <div
+        data-state={showCodeEditor}
         id="vseditor_box"
         style={{ display: showCodeEditor ? 'block' : 'none' }}
-        data-state={showCodeEditor}
       >
         <div id="vseditor_box_container"></div>
       </div>

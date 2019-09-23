@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-18 12:06:12
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-19 20:02:09
+ * @LastEditTime: 2019-09-23 14:36:01
  */
 import React from 'react';
 import { Select, Divider, Icon } from 'antd';
@@ -24,14 +24,14 @@ const JavascriptCodeComp = ({
   let index = jsString.lastIndexOf('function');
   let jsCode = ''; // 函数方法体内容
   const jsreg = /{([\s\S]+)}/;
- 
+
   while (index > 0) {
     jsCode = jsString.substr(index).match(jsreg);
     codeSnippet.push({
       name: '',
       code: jsString.substr(index), // 拿到函数体完整代码
       js: jsCode[1] || jsCode[0] || '' // 函数运行内容
-    }); 
+    });
 
     jsString = jsString.substr(0, index);
     index = jsString.lastIndexOf('function');
@@ -45,13 +45,17 @@ const JavascriptCodeComp = ({
 
   codeSnippet.unshift({
     name: '无',
-    js:'',
+    js: '',
     code: '-' // 当没有值的时候，删除这属性
   });
 
   if (codeSnippet && codeSnippet.length) {
     children = codeSnippet.map((option, index) => (
-      <Option key={option.name + '_' + index} data-key={option.name + '_' + index} value={option.js}>
+      <Option
+        data-key={option.name + '_' + index}
+        key={option.name + '_' + index}
+        value={option.js}
+      >
         {option.name}
       </Option>
     ));
@@ -67,25 +71,25 @@ const JavascriptCodeComp = ({
       {/* TODO: 这里添加 onMouseDown 是为了阻止Select默认行为导致 dropdownRender 无法生效  */}
       <Select
         {...attrs}
-        defaultValue={value}
         className="input"
-        size="small"
-        key={id}
-        id={id}
-        onChange={handleChange}
-        dropdownRender={(menu, props) => (
+        defaultValue={value}
+        dropdownRender={(menu) => (
           <div>
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             <div
+              className="dropdownRender"
               data-desc="自定义条目"
               onClick={addDataHandle}
-              className="dropdownRender"
             >
               <Icon type="plus" /> 添加JS函数
             </div>
           </div>
         )}
+        id={id}
+        key={id}
+        onChange={handleChange}
+        size="small"
       >
         {children}
       </Select>

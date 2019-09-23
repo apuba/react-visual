@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-19 10:53:30
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-19 18:01:29
+ * @LastEditTime: 2019-09-23 12:17:50
  */
 import React from 'react';
 import { Select, Divider, Icon } from 'antd';
@@ -14,7 +14,6 @@ const DataSourceComp = ({
   attrs,
   value,
   id,
-  type,
   data,
   addDataHandle
 }) => {
@@ -51,26 +50,26 @@ const DataSourceComp = ({
       {/* TODO: 这里添加 onMouseDown 是为了阻止Select默认行为导致 dropdownRender 无法生效  */}
       <Select
         {...attrs}
-        defaultValue={value}
         className="input"
-        size="small"
-        key={id}
-        id={id}
         data-ref={id}
-        onChange={handleChange}
-        dropdownRender={(menu, props) => (
+        defaultValue={value}
+        dropdownRender={(menu) => (
           <div>
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             <div
-              data-desc="自定义条目"            
-              onClick={addDataHandle}
               className="dropdownRender"
+              data-desc="自定义条目"
+              onClick={addDataHandle}
             >
               <Icon type="plus" /> 添加数据源
             </div>
           </div>
         )}
+        id={id}
+        key={id}
+        onChange={handleChange}
+        size="small"
       >
         {children}
       </Select>

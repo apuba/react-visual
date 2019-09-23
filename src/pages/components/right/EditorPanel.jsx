@@ -27,38 +27,42 @@ class EditorPanel extends Component {
    * @param {*} obj 当前组件对象
    * @memberof Designer
    */
-  updateEditComponent = _.debounce((category, type, label, val, obj) => {
-    if (!category && !type) {
-      console.error('参数配置错误: 缺少category 或 type 参数');
-      return;
-    }
-    const { config } = obj;
-    if (val === 'true') {
-      // 对字符串的 'true' 'false'进行转换
-      val = true;
-    } else if (val === 'false') {
-      val = false;
-    }
 
-    config.config[category].props[type].value = val; // 更新配置的值 gutter
-    if (category === 'grid') {
-      // 栅格配置
-      config.grid[type] = val;
-    } else if (type === 'slot') {
-      config.slot = val; // 当前渲染的内容
-    } else if (val === '-' && config.props[type]) {
-      // 如果值为 '-',则删除掉这属性
-      delete config.props[type];
-    } else if (Array.isArray(val)) {
-      config.props[type] = val.join(' '); // 当前渲染的属性
-    } else {
-      config.props[type] = val; // 当前渲染的属性
-    }
+  constructor(props) {
+    super(props);
+    this.updateEditComponent = _.debounce((category, type, label, val, obj) => {
+      if (!category && !type) {
+        console.error('参数配置错误: 缺少category 或 type 参数');
+        return;
+      }
+      const { config } = obj;
+      if (val === 'true') {
+        // 对字符串的 'true' 'false'进行转换
+        val = true;
+      } else if (val === 'false') {
+        val = false;
+      }
 
-    this.props.updateBaseState('timespan', 'ver:' + new Date().getTime()); // 更新视图与状态
-    // this.setState({});
-    console.log('编辑属性完成', obj);
-  }, 500);
+      config.config[category].props[type].value = val; // 更新配置的值 gutter
+      if (category === 'grid') {
+        // 栅格配置
+        config.grid[type] = val;
+      } else if (type === 'slot') {
+        config.slot = val; // 当前渲染的内容
+      } else if (val === '-' && config.props[type]) {
+        // 如果值为 '-',则删除掉这属性
+        delete config.props[type];
+      } else if (Array.isArray(val)) {
+        config.props[type] = val.join(' '); // 当前渲染的属性
+      } else {
+        config.props[type] = val; // 当前渲染的属性
+      }
+
+      this.props.updateBaseState('timespan', 'ver:' + new Date().getTime()); // 更新视图与状态
+      // this.setState({});
+      console.log('编辑属性完成', obj);
+    }, 500);
+  }
 
   // 获取当前要编辑的组件,显示到编辑面板上的那个组件
   getEditComponentById(id) {
@@ -66,7 +70,7 @@ class EditorPanel extends Component {
   }
 
   // 创建编辑页面的下拉选项
-  createEditorPanelOption(prop, type) {
+  createEditorPanelOption(prop) {
     let options = [];
     if (prop.options) {
       options = prop.options;
@@ -95,33 +99,33 @@ class EditorPanel extends Component {
   }
 
   // 下拉菜单添加数据源的事件
-  selectAddDataSourceHandle(type, e) {
-    debugger;
+  selectAddDataSourceHandle(type) {
+    // debugger;
     if (type === 'staticDataSource') {
       this.props.updateBaseState('editComponentId', null);
       this.props.updateBaseState('activeId', 'dom_0');
     } else {
-      alert('动态数据源添加');
+      console.log('动态数据源添加');
       // TODO: 开发到这里。添加动态数据源，新建一个组件，通过组件选择数据表，筛选的字段名，查询条件得到一个数据源请求配置
       // 通过这个配置获取对应数据源，绑定到对应当前组件
     }
   }
 
   // 编辑全局 css
-  cssCodeEditHandle(e) {
+  cssCodeEditHandle() {
     this.props.updateBaseState('showCodeEditor', true);
     this.props.updateBaseState('codeEditorLanguage', 'css');
   }
-  jsCodeEditHandle(e) {
+  jsCodeEditHandle() {
     this.props.updateBaseState('showCodeEditor', true);
     this.props.updateBaseState('codeEditorLanguage', 'javascript');
   }
   // 新增样式
   addStyleHandle(style, e) {
-    alert('请弹出样式选择窗');
+    console.log('请弹出样式选择窗', style ,  e);
   }
   // 创建组件的其他属性
-  renderProps(config, type) {
+  renderProps() {
     /*   switch (type) {
       case 'staticDataSource':
       case 'dynamicDataSource':
@@ -129,6 +133,7 @@ class EditorPanel extends Component {
       default:
         return {};
     } */
+    // console.log('创建组件的其他属性', config, type);
   }
 
   // 渲染属性页面上对应属性的显示组件 ---------------------------------------------------
@@ -145,16 +150,17 @@ class EditorPanel extends Component {
 
       let attribute = {
         attrs,
-        handleChange: val => this.updateEditComponent(category, type, prop.label, val, obj),
+        handleChange: val =>
+          this.updateEditComponent(category, type, prop.label, val, obj),
         value: prop.value
       };
       switch (prop.component) {
         case 'ClassNameComp': // css样式组件
           attribute = {
             ...attribute,
-            type,     
+            type,
             css,
-            id: selectId,           
+            id: selectId,
             addDataHandle: this.cssCodeEditHandle.bind(this)
           };
           break;
@@ -162,7 +168,7 @@ class EditorPanel extends Component {
           attribute = {
             ...attribute,
             js,
-            id: selectId,           
+            id: selectId,
             addDataHandle: this.jsCodeEditHandle.bind(this)
           };
           break;
@@ -185,8 +191,8 @@ class EditorPanel extends Component {
           break;
         case 'StaticDataSourceComp': // 静态数据源
           attribute = {
-            ...attribute,           
-            id: selectId,           
+            ...attribute,
+            id: selectId,
             data: dataSource.static, // 静态数据
             addDataHandle: this.selectAddDataSourceHandle.bind(this, type)
           };
@@ -194,8 +200,8 @@ class EditorPanel extends Component {
 
         case 'DynamicDataSourceComp':
           attribute = {
-            ...attribute,           
-            id: selectId,           
+            ...attribute,
+            id: selectId,
             data: dataSource.dynamic, // 动态数据
             addDataHandle: this.selectAddDataSourceHandle.bind(this, type)
           };

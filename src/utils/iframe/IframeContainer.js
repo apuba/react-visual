@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Author: 侯兴章
+ * @Date: 2019-09-17 17:21:24
+ * @LastEditors: 侯兴章
+ * @LastEditTime: 2019-09-17 17:21:24
+ */
 /**
  * @description 嵌套iframe页面的容器
  */
@@ -10,12 +17,12 @@ class IframeContainer {
     validatorConfig(config){
         const {
             url,
-            height = "400px",
-            width = "300px",
+            height = '400px',
+            width = '300px',
             container
         } = config
         if(!url || !width || !container || !height){
-            throw new Error("参数配置有误，请检查")
+            throw new Error('参数配置有误，请检查')
         }
         this.url = url
         this.height = height
@@ -27,9 +34,9 @@ class IframeContainer {
     createTemplate(){
         this.iframeId = (Math.random()*10000).toFixed(0)
         const template = `
-            <section style="position:relative;width:100%;height:100%">
-                <span class="close-iframe" 
-                    style="position: absolute;
+            <section style='position:relative;width:100%;height:100%'>
+                <span class='close-iframe' 
+                    style='position: absolute;
                     right: 1px;
                     top: 2px;
                     display:none;
@@ -38,13 +45,13 @@ class IframeContainer {
                     border-radius: 50%;
                     font-size: 12px;
                     cursor:pointer;
-                    padding: 0px 4px 0px 4px;">
+                    padding: 0px 4px 0px 4px;'>
                     X
                 </span>
-                <iframe src="${this.url}" id="${this.iframeId}" 
+                <iframe src='${this.url}' id='${this.iframeId}' 
                     frameborder = 0  
-                    width="100%"
-                    height="100%">
+                    width='100%'
+                    height='100%'>
                 </iframe>
             </section>
         `
@@ -55,24 +62,24 @@ class IframeContainer {
         const template = this.createTemplate()
         let container = document.querySelector(this.container)
         if(!container){
-            throw new Error("页面不存在该容器: " + this.container)
+            throw new Error('页面不存在该容器: ' + this.container)
         }
         const styleObj = {
             height:this.height,
             width:this.width,
-            boxShadow: "0 5px 15px rgba(0,0,0,.3)"
+            boxShadow: '0 5px 15px rgba(0,0,0,.3)'
         }
         Object.assign(container.style,styleObj)
         container.innerHTML = template
-        document.getElementById(this.iframeId).addEventListener("load",() => {
+        document.getElementById(this.iframeId).addEventListener('load',() => {
             this.iframeDidMount()
             this.childPageLoaded = true
         })
     }
     // iframe加载完成之后
     iframeDidMount(){
-        const closeBtn = document.querySelector(this.container + " section .close-iframe")
-        closeBtn.style.display = "block"
+        const closeBtn = document.querySelector(this.container + ' section .close-iframe')
+        closeBtn.style.display = 'block'
         closeBtn.onclick = () => {
             this.closeIframe()
         }
@@ -80,23 +87,23 @@ class IframeContainer {
     // 关闭iframe容器
     closeIframe(){
         const iframeContainer = document.querySelector(this.container)
-        iframeContainer.innerHTML = ""
+        iframeContainer.innerHTML = ''
         this.destroy()
     }
     // 向子页面发送消息
     sendMessageToChild(data){
-        const iframe = document.querySelector(this.container + " section>iframe")
+        const iframe = document.querySelector(this.container + ' section>iframe')
         if(!iframe){
-            throw new Error("页面中不存在该选择器")
+            throw new Error('页面中不存在该选择器')
         }
         if(this.childPageLoaded){
             const childPage = iframe.contentWindow
-            childPage.postMessage(data,"*")
+            childPage.postMessage(data,'*')
         }else{
             const timer = setInterval(() => {
                 if(this.childPageLoaded){
                     const childPage = iframe.contentWindow
-                    childPage.postMessage(data,"*")
+                    childPage.postMessage(data,'*')
                     clearInterval(timer)
                 }
             }, 100)
@@ -106,14 +113,14 @@ class IframeContainer {
     listenMessageFromChildPage(callback){
         window.onmessage = (ev) => {
             const { data } = ev
-            if(typeof callback == "function"){
+            if(typeof callback == 'function'){
                 callback(data)
             }
         }
     }
     // 修改容器的样式
     updateContainerStyle(styleObj){
-        const container = document.querySelector(this.container + " section")
+        const container = document.querySelector(this.container + ' section')
         Object.assign(container.style,styleObj)
     }
     destroy(){

@@ -1,11 +1,11 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
  * @LastEditTime: 2019-09-17 17:21:24
  */
-import * as types from './actionType'
+import * as types from './actionType';
 
 // 简单更一个状态
 export const updateBaseState = (key, value) => ({
@@ -14,18 +14,16 @@ export const updateBaseState = (key, value) => ({
     key,
     value
   }
-})
+});
 
 // 更新当前动态拖拽的组件
-export const updateDynamicComponent = (component, action = 'update') => (
-  {
-    type: types.UPDATE_DYNAMICCOMPONENT_LIST, // 这里的 UPDATE_DYNAMICCOMPONENT_LIST 的type是与reducer里的验证有关
-    payload: {
-      component,
-      action
-    }
+export const updateDynamicComponent = (component, action = 'update') => ({
+  type: types.UPDATE_DYNAMICCOMPONENT_LIST, // 这里的 UPDATE_DYNAMICCOMPONENT_LIST 的type是与reducer里的验证有关
+  payload: {
+    component,
+    action
   }
-)
+});
 
 // 显示与隐藏的开关列表
 export const updateToggle = domId => ({
@@ -33,7 +31,7 @@ export const updateToggle = domId => ({
   payload: {
     domId
   }
-})
+});
 
 // 更新当前编辑的组件id
 export const updateEditComponentId = id => ({
@@ -41,7 +39,7 @@ export const updateEditComponentId = id => ({
   payload: {
     id
   }
-})
+});
 // 更新拖拽对象
 export const updateDraggable = (key, value) => ({
   type: types.UPDATE_GRAGGABLE,
@@ -49,7 +47,7 @@ export const updateDraggable = (key, value) => ({
     key,
     value
   }
-})
+});
 
 // 更新静态数据源
 export const updateDataSourceStatic = (action, key, value) => ({
@@ -59,4 +57,4 @@ export const updateDataSourceStatic = (action, key, value) => ({
     value,
     action
   }
-})
+});

@@ -4,14 +4,14 @@
  * @Last Modified by: houxingzhang
  * @Last Modified time: 2019-09-07 17:34:46
  */
-import React from 'react'
+import React from 'react';
 
 export default props => {
   return (
     <div>
-      <textarea className='page_designer_code' value={props.code} readOnly>
+      <textarea className="page_designer_code" readOnly value={props.code}>
         源代码预览区
       </textarea>
     </div>
-  )
-}
+  );
+};

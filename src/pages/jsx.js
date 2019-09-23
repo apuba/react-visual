@@ -1,9 +1,9 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-17 17:21:24
+ * @LastEditTime: 2019-09-23 14:37:35
  */
 export const json = ` 
 /*
@@ -44,7 +44,7 @@ class Index extends Component {
     </div>)
   }
 }
-export default Index;`
+export default Index;`;
 
 export const html = `<div class='ant-row design_preview'>
           
@@ -57,10 +57,10 @@ export const html = `<div class='ant-row design_preview'>
   
   </Select>
 </span>
-</div>`
+</div>`;
 
 export const js = `
 console.log("字符串js已运行", name);
 e.runCustomJS(name,e)
-`
-export const button = '<Button>新的按钮</Button>'
+`;
+export const button = '<Button>新的按钮</Button>';

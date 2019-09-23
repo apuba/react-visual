@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-23 14:36:49
+ * @LastEditTime: 2019-09-23 15:04:14
  */
 /* 按钮组件配置
  * @Author: houxingzhang
@@ -73,7 +73,8 @@ export default {
       label: '事件方法',
       props: {
         onClick: {
-          label: '点击按钮',
+          component: 'JavascriptCodeComp', // 显示使js选择组件
+          label: '点击事件',
           value: ''
         }
       }

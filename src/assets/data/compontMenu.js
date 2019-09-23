@@ -3,7 +3,7 @@
  * @Author: 侯兴章
  * @Date: 2019-09-17 17:21:24
  * @LastEditors: 侯兴章
- * @LastEditTime: 2019-09-20 11:45:29
+ * @LastEditTime: 2019-09-23 15:31:56
  */
 export default [
   {
@@ -18,15 +18,15 @@ export default [
       },
       {
         name: '按钮控件',
-        key: 'Button',
+        key: 'HYButton',
         icon: 'setting'
       },
       {
         name: '下拉框控件',
-        key: 'Select',
+        key: 'HYSelect',
         icon: 'setting'
-      },
-     /*  {
+      }
+      /*  {
         name: '单选框控件',
         key: 'Radio',
         icon: 'setting'
