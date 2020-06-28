@@ -58,10 +58,10 @@ export default class SelectTable extends Component {
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
     const loop = data =>
-      data.map(item => {
-        const index = item.title.indexOf(searchValue);
-        const beforeStr = item.title.substr(0, index);
-        const afterStr = item.title.substr(index + searchValue.length);
+      data.result.map(item => {
+        const index = item.tableAlias.indexOf(searchValue);
+        const beforeStr = item.tableAlias.substr(0, index);
+        const afterStr = item.tableAlias.substr(index + searchValue.length);
         const title =
           index > -1 ? (
             <span>
@@ -70,16 +70,16 @@ export default class SelectTable extends Component {
               {afterStr}
             </span>
           ) : (
-            <span>{item.title}</span>
+            <span>{item.tableAlias}</span>
           );
         if (item.children) {
           return (
-            <TreeNode key={item.key} title={title}>
+            <TreeNode key={item.tableId} title={title}>
               {loop(item.children)}
             </TreeNode>
           );
         }
-        return <TreeNode key={item.key} title={title} />;
+        return <TreeNode key={item.tableId} title={title} />;
       });
     return (
       <div>

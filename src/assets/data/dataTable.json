@@ -4,7 +4,8 @@
     "code": 0,
     "message": "success",
     "dataId": null,
-    "result": [{
+    "result": 
+    [{
         "tableId": "7023681e392a41e28126e7103e3c172c",
         "tableAlias": "人员表",
         "columns": [{
